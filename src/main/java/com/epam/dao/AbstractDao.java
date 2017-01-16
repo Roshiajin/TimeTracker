@@ -1,5 +1,8 @@
 package com.epam.dao;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,6 +15,8 @@ import java.util.Set;
  * Created by Alexander_Gaptullin on 12/20/2016.
  */
 public abstract class AbstractDao<T extends Identified<PK>, PK extends Integer> implements GenericDao<T, PK> {
+
+    private static final Logger logger = LogManager.getLogger(AbstractDao.class);
 
     private DaoFactory<Connection> parentFactory;
 
@@ -185,4 +190,6 @@ public abstract class AbstractDao<T extends Identified<PK>, PK extends Integer> 
             }
         }
     }
+
+    protected Connection getConnection() {return connection;}
 }

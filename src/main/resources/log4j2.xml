@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+    <Properties>
+        <Property name="Controller">logs/Controller.log</Property>
+        <Property name="Dao">logs/Dao.log</Property>
+        <Property name="Model">logs/Model.log</Property>
+        <Property name="Service">logs/Service.log</Property>
+        <Property name="Sql">logs/Sql.log</Property>
+        <Property name="View">logs/View.log</Property>
+
+    </Properties>
+
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+        </Console>
+
+        <File name="Controller-all" fileName="${Controller}" append="true">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
+        </File>
+        <File name="Dao-all" fileName="${Dao}" append="true">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
+        </File>
+        <File name="Model-all" fileName="${Model}" append="true">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
+        </File>
+        <File name="Service-all" fileName="${Service}" append="true">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
+        </File>
+        <File name="Sql-all" fileName="${Sql}" append="true">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
+        </File>
+        <File name="View-all" fileName="${View}" append="true">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
+        </File>
+    </Appenders>
+
+    <Loggers>
+        <Root level="error">
+            <AppenderRef ref="Console"/>
+        </Root>
+
+        <Logger name="com.epam.controller" additivity="false" level="ALL">
+            <AppenderRef ref="Controller-all" level="ALL" />
+        </Logger>
+
+        <Logger name="com.epam.dao" additivity="false" level="ALL">
+            <AppenderRef ref="Dao-all" level="ALL" />
+        </Logger>
+
+        <Logger name="com.epam.model" additivity="false" level="ALL">
+            <AppenderRef ref="Model-all" level="ALL" />
+        </Logger>
+
+        <Logger name="com.epam.service" additivity="false" level="ALL">
+            <AppenderRef ref="Service-all" level="ALL" />
+        </Logger>
+
+        <Logger name="com.epam.sql" additivity="false" level="ALL">
+            <AppenderRef ref="Sql-all" level="ALL" />
+        </Logger>
+
+        <Logger name="com.epam.view" additivity="false" level="ALL">
+            <AppenderRef ref="View-all" level="ALL" />
+        </Logger>
+
+    </Loggers>
+</Configuration>

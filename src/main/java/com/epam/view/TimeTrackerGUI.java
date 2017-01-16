@@ -1,22 +1,63 @@
 package com.epam.view;
 
-import java.util.Observer;
+import com.epam.service.TimeTrackerService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import java.awt.*;
-import java.awt.event.*;
 import javax.swing.*;
+import javax.swing.table.TableModel;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Date;
+
+public class TimeTrackerGUI extends ExampleGUI {
+
+    private static final Logger logger = LogManager.getLogger(TimeTrackerGUI.class);
+
+    TimeTrackerService service;
+
+    public TimeTrackerGUI(TimeTrackerService service) {
+
+        super("TimeTracker", new TimeLogTableModel(service.gettAllTimeLog()));
+        addCreateTimeLogListener(new CreateTimeLogEventListener());
+        addFilterListener(new FilterEventListener());
+        this.service = service;
+
+        setTotalTime(String.valueOf( service.getTotalTime( service.gettAllTimeLog() )));
+    }
+
+    class CreateTimeLogEventListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            String message = "";
+            message += "CreateButton was pressed\n";
+            message += "values: \n" + getPersonName() + "\n"
+                    + getLogDescription() + "\n"
+                    + getStartDateTime().toString() + "\n"
+                    + getEndDateTime().toString();
+
+            JOptionPane.showMessageDialog(null,
+                    message,
+                    "Output",
+                    JOptionPane.PLAIN_MESSAGE);
+
+            service.createTimeLog(getPersonName(), getLogDescription(), getStartDateTime(), getEndDateTime());
+        }
+    }
+
+    class FilterEventListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            String message = "";
+            message += "FilterButton was pressed\n";
+            message += "value: " + getFilter();
+
+            JOptionPane.showMessageDialog(null,
+                    message,
+                    "Output",
+                    JOptionPane.PLAIN_MESSAGE);
 
 
-abstract class TimeTrackerGUI implements Observer {
-
-    private String label;
-    private JTextField personNameField = new JTextField("Person Name");
-    private JTextField logDescField = new JTextField("Log Description");
-    private JTextField startDateTimeField = new JTextField("Start Datetime");
-    private JTextField endDateTimeField = new JTextField("End Datetime");
-    private JButton createLogButton = new JButton("Add log");
-
-
+        }
+    }
 
 
 }

@@ -4,6 +4,8 @@ import com.epam.dao.AbstractDao;
 import com.epam.dao.DaoFactory;
 import com.epam.dao.PersistException;
 import com.epam.model.Person;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,6 +18,8 @@ import java.util.Random;
  * Created by Alexander_Gaptullin on 12/21/2016.
  */
 public class PersonDao extends AbstractDao<Person, Integer> {
+
+    private static final Logger logger = LogManager.getLogger(PersonDao.class);
 
     @Override
     public String getSelectQuery() {
@@ -80,5 +84,26 @@ public class PersonDao extends AbstractDao<Person, Integer> {
         } catch (Exception e) {
             throw new PersistException(e);
         }
+    }
+
+    public Person getByName(String personName) throws PersistException {
+        List<Person> list;
+        String sql = getSelectQuery();
+        sql += " WHERE name = ?";
+        try (PreparedStatement statement = getConnection().prepareStatement(sql)) {
+            statement.setString(1, personName);
+            ResultSet rs = statement.executeQuery();
+            list = parseResultSet(rs);
+        } catch (Exception e) {
+            throw new PersistException(e);
+        }
+        if (list == null || list.size() == 0) {
+            return null;
+        }
+        if (list.size() > 1) {
+            logger.trace("getByName.size", list.size());
+            throw new PersistException("Received more than one record.");
+        }
+        return list.iterator().next();
     }
 }

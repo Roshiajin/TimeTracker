@@ -1,5 +1,8 @@
 package com.epam.dao;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.lang.reflect.Field;
 import java.sql.Connection;
 
@@ -7,6 +10,8 @@ import java.sql.Connection;
  * Created by Alexander_Gaptullin on 12/21/2016.
  */
 public class ManyToOne<Owner extends Identified, Dependence extends Identified> {
+
+    private static final Logger logger = LogManager.getLogger(ManyToOne.class);
 
     private DaoFactory<Connection> factory;
 

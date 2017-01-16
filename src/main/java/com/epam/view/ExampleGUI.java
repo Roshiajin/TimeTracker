@@ -1,181 +1,70 @@
 package com.epam.view;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.awt.*;
+import java.awt.event.ActionListener;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.swing.*;
+import javax.swing.table.TableModel;
+import javax.swing.text.MaskFormatter;
 
 
-public class ExampleGUI {
+abstract class ExampleGUI {
 
-    final static boolean shouldFill = true;
-    final static boolean shouldWeightX = true;
-    final static boolean RIGHT_TO_LEFT = false;
+    private static final Logger logger = LogManager.getLogger(ExampleGUI.class);
 
-    public static void addComponentsToPane(Container pane) {
-        if (RIGHT_TO_LEFT) {
-            pane.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
-        }
+    private JLabel personNameLabel = new JLabel("Person Name:");
+    private JLabel logDescriptionLabel = new JLabel("Log Description:");
+    private JLabel startDateTimeLabel = new JLabel("Start DateTime:");
+    private JLabel endDateTimeLabel = new JLabel("End DateTime:");
+    private JTextField personNameTextField = new JTextField();
+    private JTextField logDescriptionTextField = new JTextField();
+    private JFormattedTextField startDateTimeTextField = new JFormattedTextField(createFormatter("##:##:## ##-##-####"));;
+    private JFormattedTextField endDateTimeTextField = new JFormattedTextField(createFormatter("##:##:## ##-##-####"));;
+    private JButton createTimeLogButton = new JButton("Create");
 
-        //pane.setMinimumSize(new Dimension(800,600));
-        //pane.setPreferredSize(new Dimension(800,600));
-        //pane.setMaximumSize(new Dimension(800,600));
+    private JLabel filterLabel = new JLabel("Filter:");
+    private JTextField filterTextField = new JTextField();
+    private JButton filterButton = new JButton("Search");
 
-        JLabel personNameLabel = new JLabel("Person Name:");
-        JLabel logDescriptionLabel = new JLabel("Log Description:");
-        JLabel startDateTimeLabel = new JLabel("Start DateTime:");
-        JLabel endDateTimeLabel = new JLabel("End DateTime:");
-        JTextField personNameTextField = new JTextField();
-        JTextField logDescriptionTextField = new JTextField();
-        JTextField startDateTimeTextField = new JTextField();
-        JTextField endDateTimeTextField = new JTextField();
-        JButton createTimeLogButton = new JButton("Create");
+    private JLabel totalTimeLabel = new JLabel("Total Time:(hours)");
+    private JTextField totalTimeTextField = new JTextField();
 
-        JLabel filterLabel = new JLabel("Filter:");
-        JTextField filterTextField = new JTextField();
-        JButton filterButton = new JButton("Search");
+    private Container pane;
 
-        JLabel totalTimeLabel = new JLabel("Total Time:");
-        JTextField totalTimeTextField = new JTextField();
+    SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy");
+
+    protected ExampleGUI(String frameTitle, TableModel tableModel) {
+
+        JFrame frame = new JFrame(frameTitle);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setMinimumSize(new Dimension(800,600));
+        frame.setPreferredSize(new Dimension(800, 600));
+
+        //Set up the content pane.
+        pane = frame.getContentPane();
 
         pane.setLayout(new GridBagLayout());
-        GridBagConstraints gridBagConstraints = new GridBagConstraints();
-        if (shouldFill) {
-            //natural height, maximum width
-            gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
-        }
 
-        if (shouldWeightX) {
-            gridBagConstraints.weightx = 0.5;
-        }
+        addLabel(pane, personNameLabel, 0, 0);
+        addLabel(pane, logDescriptionLabel, 1, 0);
+        addLabel(pane, startDateTimeLabel, 2, 0);
+        addLabel(pane, endDateTimeLabel, 3, 0);
+        addTextField(pane, personNameTextField, 0, 1);
+        addTextField(pane, logDescriptionTextField, 1, 1);
+        addDateFormattedTextField(pane, startDateTimeTextField, 2, 1);
+        addDateFormattedTextField(pane, endDateTimeTextField, 3, 1);
+        addButton(pane, createTimeLogButton, 4, 1);
 
-        ////--------------
-        /** personNameLabel **/
-        GridBagConstraints personNameLabelConstraints = new GridBagConstraints();
-        personNameLabelConstraints.fill = GridBagConstraints.NONE;
-        personNameLabelConstraints.gridx = 0;
-        personNameLabelConstraints.gridy = 0;
-        personNameLabelConstraints.anchor = GridBagConstraints.LINE_END;
-        personNameLabelConstraints.insets = new Insets(0,5,0,0);
-        pane.add(personNameLabel, personNameLabelConstraints);
+        addLabel(pane, filterLabel, 0, 2);
+        addTextField(pane, filterTextField, 1, 2);
+        addButton(pane, filterButton, 2, 2);
 
-        /** logDescriptionLabel **/
-        GridBagConstraints logDescriptionLabelConstraints = new GridBagConstraints();
-        logDescriptionLabelConstraints.fill = GridBagConstraints.NONE;
-        logDescriptionLabelConstraints.gridx = 1;
-        logDescriptionLabelConstraints.gridy = 0;
-        logDescriptionLabelConstraints.anchor = GridBagConstraints.LINE_END;
-        logDescriptionLabelConstraints.insets = new Insets(0,5,0,0);
-        pane.add(logDescriptionLabel, logDescriptionLabelConstraints);
-
-        /** startDateTimeLabel **/
-        GridBagConstraints startDateTimeLabelConstraints = new GridBagConstraints();
-        startDateTimeLabelConstraints.fill = GridBagConstraints.NONE;
-        startDateTimeLabelConstraints.gridx = 2;
-        startDateTimeLabelConstraints.gridy = 0;
-        startDateTimeLabelConstraints.anchor = GridBagConstraints.LINE_END;
-        startDateTimeLabelConstraints.insets = new Insets(0,5,0,0);
-        pane.add(startDateTimeLabel, startDateTimeLabelConstraints);
-
-        /** endDateTimeLabel **/
-        GridBagConstraints endDateTimeLabelConstraints = new GridBagConstraints();
-        endDateTimeLabelConstraints.fill = GridBagConstraints.NONE;
-        endDateTimeLabelConstraints.gridx = 3;
-        endDateTimeLabelConstraints.gridy = 0;
-        endDateTimeLabelConstraints.anchor = GridBagConstraints.LINE_END;
-        endDateTimeLabelConstraints.insets = new Insets(0,5,0,0);
-        pane.add(endDateTimeLabel, endDateTimeLabelConstraints);
-
-        /** personNameTextField **/
-        GridBagConstraints personNameTextFieldConstraints = new GridBagConstraints();
-        personNameTextFieldConstraints.fill = GridBagConstraints.HORIZONTAL;
-        personNameTextFieldConstraints.gridx = 0;
-        personNameTextFieldConstraints.gridy = 1;
-        personNameTextFieldConstraints.weightx = 0.5;
-        personNameTextFieldConstraints.anchor = GridBagConstraints.CENTER;
-        personNameTextFieldConstraints.insets = new Insets(0,5,0,0);
-        personNameTextField.setMinimumSize(new Dimension(100, 20));
-        personNameTextField.setPreferredSize(new Dimension(100, 20));
-        pane.add(personNameTextField, personNameTextFieldConstraints);
-
-        /** logDescriptionTextField **/
-        GridBagConstraints logDescriptionTextFieldConstraints = new GridBagConstraints();
-        logDescriptionTextFieldConstraints.fill = GridBagConstraints.HORIZONTAL;
-        logDescriptionTextFieldConstraints.gridx = 1;
-        logDescriptionTextFieldConstraints.gridy = 1;
-        logDescriptionTextFieldConstraints.weightx = 0.5;
-        logDescriptionTextFieldConstraints.anchor = GridBagConstraints.CENTER;
-        logDescriptionTextFieldConstraints.insets = new Insets(0,5,0,0);
-        logDescriptionTextField.setMinimumSize(new Dimension(100, 20));
-        logDescriptionTextField.setPreferredSize(new Dimension(100, 20));
-        pane.add(logDescriptionTextField, logDescriptionTextFieldConstraints);
-
-        /** startDateTimeTextField **/
-        GridBagConstraints startDateTimeTextFieldConstraints = new GridBagConstraints();
-        startDateTimeTextFieldConstraints.fill = GridBagConstraints.HORIZONTAL;
-        startDateTimeTextFieldConstraints.gridx = 2;
-        startDateTimeTextFieldConstraints.gridy = 1;
-        startDateTimeTextFieldConstraints.weightx = 0.5;
-        startDateTimeTextFieldConstraints.anchor = GridBagConstraints.CENTER;
-        startDateTimeTextFieldConstraints.insets = new Insets(0,5,0,0);
-        startDateTimeTextField.setMinimumSize(new Dimension(100, 20));
-        startDateTimeTextField.setPreferredSize(new Dimension(100, 20));
-        pane.add(startDateTimeTextField, startDateTimeTextFieldConstraints);
-
-        /** endDateTimeTextField **/
-        GridBagConstraints endDateTimeTextFieldConstraints = new GridBagConstraints();
-        endDateTimeTextFieldConstraints.fill = GridBagConstraints.HORIZONTAL;
-        endDateTimeTextFieldConstraints.gridx = 3;
-        endDateTimeTextFieldConstraints.gridy = 1;
-        endDateTimeTextFieldConstraints.weightx = 0.5;
-        endDateTimeTextFieldConstraints.anchor = GridBagConstraints.CENTER;
-        endDateTimeTextFieldConstraints.insets = new Insets(0,5,0,0);
-        endDateTimeTextField.setMinimumSize(new Dimension(100, 20));
-        endDateTimeTextField.setPreferredSize(new Dimension(100, 20));
-        pane.add(endDateTimeTextField, endDateTimeTextFieldConstraints);
-
-        /** createTimeLogButton **/
-        GridBagConstraints createTimeLogButtonConstraints = new GridBagConstraints();
-        createTimeLogButtonConstraints.fill = GridBagConstraints.NONE;
-        createTimeLogButtonConstraints.gridx = 4;
-        createTimeLogButtonConstraints.gridy = 1;
-        createTimeLogButtonConstraints.anchor = GridBagConstraints.LINE_START;
-        createTimeLogButtonConstraints.insets = new Insets(0,5,0,5);
-        createTimeLogButton.setMinimumSize(new Dimension(75, 20));
-        createTimeLogButton.setPreferredSize(new Dimension(75, 20));
-        pane.add(createTimeLogButton, createTimeLogButtonConstraints);
-
-        /** filterLabel **/
-        GridBagConstraints filterLabelConstraints = new GridBagConstraints();
-        filterLabelConstraints.fill = GridBagConstraints.NONE;
-        filterLabelConstraints.gridx = 0;
-        filterLabelConstraints.gridy = 2;
-        filterLabelConstraints.anchor = GridBagConstraints.LAST_LINE_END;
-        filterLabelConstraints.insets = new Insets(0,5,0,0);
-        pane.add(filterLabel, filterLabelConstraints);
-
-        /** filterTextField **/
-        GridBagConstraints filterTextFieldConstraints = new GridBagConstraints();
-        filterTextFieldConstraints.fill = GridBagConstraints.HORIZONTAL;
-        filterTextFieldConstraints.gridx = 1;
-        filterTextFieldConstraints.gridy = 2;
-        filterTextFieldConstraints.anchor = GridBagConstraints.CENTER;
-        filterTextFieldConstraints.insets = new Insets(0,5,0,0);
-        filterTextField.setMinimumSize(new Dimension(100, 20));
-        filterTextField.setPreferredSize(new Dimension(100, 20));
-        pane.add(filterTextField, filterTextFieldConstraints);
-
-        /** filterButton **/
-        GridBagConstraints filterButtonConstraints = new GridBagConstraints();
-        filterButtonConstraints.fill = GridBagConstraints.NONE;
-        filterButtonConstraints.gridx = 2;
-        filterButtonConstraints.gridy = 2;
-        filterButtonConstraints.anchor = GridBagConstraints.LINE_START;
-        filterButtonConstraints.insets = new Insets(0,5,0,0);
-        filterButton.setMinimumSize(new Dimension(75, 20));
-        filterButton.setPreferredSize(new Dimension(75, 20));
-        pane.add(filterButton, filterButtonConstraints);
-
-        /** TimeLogTable **/
-        JTable timeLogTable = new JTable(new TimeLogTableModel());
+        JTable timeLogTable = new JTable(tableModel);
         //timeLogTable.setPreferredScrollableViewportSize(new Dimension(800, 70));
         timeLogTable.setFillsViewportHeight(true);
 
@@ -189,93 +78,120 @@ public class ExampleGUI {
         timeLogScrollPaneConstraints.insets = new Insets(5,5,5,5);
         pane.add(timeLogScrollPane, timeLogScrollPaneConstraints);
 
-
-        /** totalTimeLabel **/
-        GridBagConstraints totalTimeLabelConstraints = new GridBagConstraints();
-        totalTimeLabelConstraints.fill = GridBagConstraints.NONE;
-        totalTimeLabelConstraints.gridx = 0;
-        totalTimeLabelConstraints.gridy = 4;
-        totalTimeLabelConstraints.anchor = GridBagConstraints.LAST_LINE_END;
-        totalTimeLabelConstraints.insets = new Insets(0,5,0,0);
-        pane.add(totalTimeLabel, totalTimeLabelConstraints);
-
-        /** totalTimeTextField **/
-        GridBagConstraints totalTimeTextFieldConstraints = new GridBagConstraints();
-        totalTimeTextFieldConstraints.fill = GridBagConstraints.NONE;
-        totalTimeTextFieldConstraints.gridx = 1;
-        totalTimeTextFieldConstraints.gridy = 4;
-        totalTimeTextFieldConstraints.anchor = GridBagConstraints.LINE_START;
-        totalTimeTextFieldConstraints.insets = new Insets(0,5,0,0);
-        totalTimeTextField.setMinimumSize(new Dimension(100, 20));
-        totalTimeTextField.setPreferredSize(new Dimension(100, 20));
-        pane.add(totalTimeTextField, totalTimeTextFieldConstraints);
-
-
-
-        ////--------------
-
-//        button = new JButton("Button 2");
-//        gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
-//        gridBagConstraints.weightx = 0.5;
-//        gridBagConstraints.gridx = 1;
-//        gridBagConstraints.gridy = 0;
-//        pane.add(button, gridBagConstraints);
-//
-//        button = new JButton("Button 3");
-//        gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
-//        gridBagConstraints.weightx = 0.5;
-//        gridBagConstraints.gridx = 2;
-//        gridBagConstraints.gridy = 0;
-//        pane.add(button, gridBagConstraints);
-//
-//        button = new JButton("Long-Named Button 4");
-//        gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
-//        gridBagConstraints.ipady = 40;      //make this component tall
-//        gridBagConstraints.weightx = 0.0;
-//        gridBagConstraints.gridwidth = 3;
-//        gridBagConstraints.gridx = 0;
-//        gridBagConstraints.gridy = 1;
-//        pane.add(button, gridBagConstraints);
-//
-//        button = new JButton("5");
-//        gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
-//        gridBagConstraints.ipady = 0;       //reset to default
-//        gridBagConstraints.weighty = 1.0;   //request any extra vertical space
-//        gridBagConstraints.anchor = GridBagConstraints.PAGE_END; //bottom of space
-//        gridBagConstraints.insets = new Insets(10,0,0,0);  //top padding
-//        gridBagConstraints.gridx = 1;       //aligned with button 2
-//        gridBagConstraints.gridwidth = 2;   //2 columns wide
-//        gridBagConstraints.gridy = 2;       //third row
-//        pane.add(button, gridBagConstraints);
-    }
-
-    /**
-     * Create the GUI and show it.  For thread safety,
-     * this method should be invoked from the
-     * event-dispatching thread.
-     */
-    private static void createAndShowGUI() {
-        //Create and set up the window.
-        JFrame frame = new JFrame("TimeTracker");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setMinimumSize(new Dimension(800,600));
-        frame.setPreferredSize(new Dimension(800, 600));
-
-        //Set up the content pane.
-        addComponentsToPane(frame.getContentPane());
+        addLabel(pane, totalTimeLabel, 0, 4);
+        addTextField(pane, totalTimeTextField, 1, 4);
+        totalTimeTextField.setEditable(false);
 
         //Display the window.
         frame.pack();
         frame.setVisible(true);
     }
 
-    public static void main(String[] args) {
+    private void addLabel(Container pane, JLabel label, int gridx, int gridy) {
+        GridBagConstraints gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.fill = GridBagConstraints.NONE;
+        gridBagConstraints.gridx = gridx;
+        gridBagConstraints.gridy = gridy;
+        gridBagConstraints.anchor = GridBagConstraints.LINE_END;
+        gridBagConstraints.insets = new Insets(0,5,0,0);
+        pane.add(label, gridBagConstraints);
+    }
 
-        javax.swing.SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                createAndShowGUI();
-            }
-        });
+    private void addTextField(Container pane, JTextField textField, int gridx, int gridy) {
+        GridBagConstraints gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.gridx = gridx;
+        gridBagConstraints.gridy = gridy;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.anchor = GridBagConstraints.CENTER;
+        gridBagConstraints.insets = new Insets(0,5,0,0);
+        textField.setMinimumSize(new Dimension(100, 20));
+        textField.setPreferredSize(new Dimension(100, 20));
+        pane.add(textField, gridBagConstraints);
+    }
+
+    private void addDateFormattedTextField(Container pane, JFormattedTextField textField, int gridx, int gridy) {
+
+        Date date = new Date();
+        //SimpleDateFormat formatter = new SimpleDateFormat("HH:mm dd-MM-yyyy");
+        String dateString = formatter.format(date);
+        //textField = new JFormattedTextField(createFormatter("##:## ##-##-####"));
+        textField.setColumns(17);
+        textField.setText(dateString);
+
+        GridBagConstraints gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.gridx = gridx;
+        gridBagConstraints.gridy = gridy;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.anchor = GridBagConstraints.CENTER;
+        gridBagConstraints.insets = new Insets(0,5,0,0);
+        textField.setMinimumSize(new Dimension(100, 20));
+        textField.setPreferredSize(new Dimension(100, 20));
+        pane.add(textField, gridBagConstraints);
+    }
+
+    private void addButton(Container pane, JButton jButton, int gridx, int gridy) {
+        GridBagConstraints gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.fill = GridBagConstraints.NONE;
+        gridBagConstraints.gridx = gridx;
+        gridBagConstraints.gridy = gridy;
+        gridBagConstraints.anchor = GridBagConstraints.LINE_START;
+        gridBagConstraints.insets = new Insets(0,5,0,5);
+        jButton.setMinimumSize(new Dimension(75, 20));
+        jButton.setPreferredSize(new Dimension(75, 20));
+        pane.add(jButton, gridBagConstraints);
+    }
+
+    public void addCreateTimeLogListener(ActionListener a) {
+        createTimeLogButton.addActionListener(a);
+    }
+
+    public void addFilterListener(ActionListener a) {
+        filterButton.addActionListener(a);
+    }
+
+    public String getPersonName() {return personNameTextField.getText();}
+
+    public String getLogDescription() {return logDescriptionTextField.getText();}
+
+    public Date getStartDateTime() {
+        Date startDateTime = new Date();
+        try {
+            logger.trace("ExampleGUI.getStartDateTime " + startDateTimeTextField.getText());
+            startDateTime = formatter.parse(startDateTimeTextField.getText());
+            logger.trace("ExampleGUI.getStartDateTime " + startDateTime.toString());
+
+        } catch (ParseException e) {
+            logger.catching(e);
+        }
+        return startDateTime;
+    }
+
+    public Date getEndDateTime() {
+        Date endDateTime = new Date();
+        try {
+            endDateTime = formatter.parse(endDateTimeTextField.getText());
+        } catch (ParseException e) {
+            logger.catching(e);
+        }
+        return endDateTime;
+    }
+
+    public String getFilter() {return filterTextField.getText();}
+
+    public void setTotalTime(String s) { totalTimeTextField.setText(s);}
+
+    public String getTotalTime() {return totalTimeTextField.getText();}
+
+    private MaskFormatter createFormatter(String s) {
+        MaskFormatter formatter = null;
+        try {
+            formatter = new MaskFormatter(s);
+        } catch (java.text.ParseException e) {
+            logger.catching(e);
+        }
+        return formatter;
     }
 
 }

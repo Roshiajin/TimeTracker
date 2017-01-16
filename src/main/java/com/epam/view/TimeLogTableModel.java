@@ -1,16 +1,24 @@
 package com.epam.view;
 
+import com.epam.model.TimeLog;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import javax.swing.table.AbstractTableModel;
 import java.util.Date;
+import java.util.List;
 
 
 class TimeLogTableModel extends AbstractTableModel {
+
+    private static final Logger logger = LogManager.getLogger(TimeLogTableModel.class);
 
     private String[] timeLogColumnNames = {"Person name",
             "Log Description",
             "Start DateTime",
             "End DateTime",
             "Interval"};
+
     private Object[][] timeLogTableData = {
             {"Kathy1", "Kathy log description", new Date(), new Date(), new Integer(1)},
             {"Kathy2", "Kathy log description", new Date(), new Date(), new Integer(2)},
@@ -19,6 +27,13 @@ class TimeLogTableModel extends AbstractTableModel {
             {"Kathy5", "Kathy log description", new Date(), new Date(), new Integer(5)},
             {"Kathy6", "Kathy log description", new Date(), new Date(), new Integer(6)}
     };
+
+    public TimeLogTableModel() {}
+
+    public TimeLogTableModel(List<TimeLog> tableData) {
+
+    }
+    
 
     public int getColumnCount() {
         return timeLogColumnNames.length;

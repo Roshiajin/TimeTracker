@@ -5,6 +5,8 @@ import com.epam.dao.DaoFactory;
 import com.epam.dao.PersistException;
 import com.epam.model.Person;
 import com.epam.model.TimeLog;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -18,6 +20,7 @@ import java.util.List;
  */
 public class TimeLogDao extends AbstractDao<TimeLog, Integer> {
 
+    private static final Logger logger = LogManager.getLogger(TimeLogDao.class);
 
     public TimeLogDao(DaoFactory<Connection> parentFactory, Connection connection) {
         super(parentFactory, connection);
@@ -74,6 +77,8 @@ public class TimeLogDao extends AbstractDao<TimeLog, Integer> {
     protected void prepareStatementForInsert(PreparedStatement statement, TimeLog object) throws PersistException {
 
         try {
+
+
             Date startDateTime = convert(object.getStartDateTime());
             Date endDateTime = convert(object.getEndDateTime());
             int personId = (object.getPerson() == null || object.getPerson().getId() == null) ? -1
@@ -83,6 +88,10 @@ public class TimeLogDao extends AbstractDao<TimeLog, Integer> {
             statement.setString(2, object.getLogDescription());
             statement.setDate(3, startDateTime);
             statement.setDate(4, endDateTime);
+
+            logger.trace("prepareStatementForInsert.startDateTime " + startDateTime.getTime());
+            logger.trace("prepareStatementForInsert.endDateTime " + endDateTime.getTime());
+
 
         } catch (Exception e) {
             throw new PersistException(e);
@@ -113,5 +122,18 @@ public class TimeLogDao extends AbstractDao<TimeLog, Integer> {
             return null;
         }
         return new java.sql.Date(date.getTime());
+    }
+
+    public List<TimeLog> getByPerson(Person person) throws PersistException {
+        List<TimeLog> list;
+        String sql = getSelectQuery() + " WHERE person_id = ?";
+        try (PreparedStatement statement = getConnection().prepareStatement(sql)) {
+            statement.setInt(person.getId(), 1);
+            ResultSet rs = statement.executeQuery();
+            list = parseResultSet(rs);
+        } catch (Exception e) {
+            throw new PersistException(e);
+        }
+        return list;
     }
 }

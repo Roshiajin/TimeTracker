@@ -1,6 +1,8 @@
 package com.epam.model;
 
 import com.epam.dao.Identified;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Date;
 
@@ -8,6 +10,8 @@ import java.util.Date;
  * Created by Alexander_Gaptullin on 12/19/2016.
  */
 public class TimeLog implements Identified<Integer> {
+
+    private static final Logger logger = LogManager.getLogger(TimeLog.class);
 
     private Integer id;
     private Person person;

@@ -5,6 +5,8 @@ import com.epam.dao.GenericDao;
 import com.epam.dao.PersistException;
 import com.epam.model.Person;
 import com.epam.model.TimeLog;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -16,6 +18,8 @@ import java.util.Map;
  * Created by Alexander_Gaptullin on 12/21/2016.
  */
 public class SqlDaoFactory implements DaoFactory<Connection> {
+
+    private static final Logger logger = LogManager.getLogger(SqlDaoFactory.class);
 
     private String user = "root";//Логин пользователя
     private String password = "";//Пароль пользователя
@@ -32,9 +36,10 @@ public class SqlDaoFactory implements DaoFactory<Connection> {
         try {
             connection = DriverManager.getConnection(url, user, password);
         } catch (SQLException e) {
+            logger.catching(e);
             throw new PersistException(e);
         }
-        return  connection;
+        return connection;
     }
 
     @Override
@@ -50,6 +55,7 @@ public class SqlDaoFactory implements DaoFactory<Connection> {
         try {
             Class.forName(driver);//Регистрируем драйвер
         } catch (ClassNotFoundException e) {
+            logger.catching(e);
             e.printStackTrace();
         }
 
