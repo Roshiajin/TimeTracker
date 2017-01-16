@@ -8,10 +8,7 @@ import com.epam.model.TimeLog;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -63,8 +60,8 @@ public class TimeLogDao extends AbstractDao<TimeLog, Integer> {
                 timeLog.setId(rs.getInt("id"));
                 timeLog.setPerson((Person) getDependence(Person.class, rs.getInt("person_id")));
                 timeLog.setLogDescription(rs.getString("log_description"));
-                timeLog.setStartDateTime(rs.getDate("start_datetime"));
-                timeLog.setEndDateTime(rs.getDate("end_datetime"));
+                timeLog.setStartDateTime(rs.getTimestamp("start_datetime"));
+                timeLog.setEndDateTime(rs.getTimestamp("end_datetime"));
                 result.add(timeLog);
             }
         } catch (Exception e) {
@@ -77,21 +74,18 @@ public class TimeLogDao extends AbstractDao<TimeLog, Integer> {
     protected void prepareStatementForInsert(PreparedStatement statement, TimeLog object) throws PersistException {
 
         try {
-
-
-            Date startDateTime = convert(object.getStartDateTime());
-            Date endDateTime = convert(object.getEndDateTime());
+//            Date startDateTime = convert(object.getStartDateTime());
+//            Date endDateTime = convert(object.getEndDateTime());
             int personId = (object.getPerson() == null || object.getPerson().getId() == null) ? -1
                     : object.getPerson().getId();
 
             statement.setInt(1, personId);
             statement.setString(2, object.getLogDescription());
-            statement.setDate(3, startDateTime);
-            statement.setDate(4, endDateTime);
+            statement.setTimestamp(3, new Timestamp(object.getStartDateTime().getTime()));
+            statement.setTimestamp(4, new Timestamp(object.getEndDateTime().getTime()));
 
-            logger.trace("prepareStatementForInsert.startDateTime " + startDateTime.getTime());
-            logger.trace("prepareStatementForInsert.endDateTime " + endDateTime.getTime());
-
+            logger.trace("prepareStatementForInsert.startDateTime " + object.getStartDateTime().getTime());
+            logger.trace("prepareStatementForInsert.endDateTime " +  object.getEndDateTime().getTime());
 
         } catch (Exception e) {
             throw new PersistException(e);

@@ -16,9 +16,9 @@ public class TimeTrackerGUI extends ExampleGUI {
 
     TimeTrackerService service;
 
-    public TimeTrackerGUI(TimeTrackerService service) {
+    public TimeTrackerGUI(TimeTrackerService service, TableModel tableModel) {
 
-        super("TimeTracker", new TimeLogTableModel(service.gettAllTimeLog()));
+        super("TimeTracker", tableModel);
         addCreateTimeLogListener(new CreateTimeLogEventListener());
         addFilterListener(new FilterEventListener());
         this.service = service;
@@ -40,7 +40,14 @@ public class TimeTrackerGUI extends ExampleGUI {
                     "Output",
                     JOptionPane.PLAIN_MESSAGE);
 
-            service.createTimeLog(getPersonName(), getLogDescription(), getStartDateTime(), getEndDateTime());
+            if (getPersonName()==null || getPersonName().isEmpty()) {
+                JOptionPane.showMessageDialog(null,
+                        "Person name is empty!",
+                        "Error!",
+                        JOptionPane.PLAIN_MESSAGE);
+            } else {
+                service.createTimeLog(getPersonName(), getLogDescription(), getStartDateTime(), getEndDateTime());
+            }
         }
     }
 
@@ -54,6 +61,8 @@ public class TimeTrackerGUI extends ExampleGUI {
                     message,
                     "Output",
                     JOptionPane.PLAIN_MESSAGE);
+
+
 
 
         }

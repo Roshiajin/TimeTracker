@@ -1,17 +1,22 @@
 package com.epam.view;
 
 import com.epam.model.TimeLog;
+import com.epam.service.TimeTrackerService;
+import com.epam.util.TimeTrackerUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.swing.table.AbstractTableModel;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 
-class TimeLogTableModel extends AbstractTableModel {
+public class TimeLogTableModel extends AbstractTableModel {
 
     private static final Logger logger = LogManager.getLogger(TimeLogTableModel.class);
+
+    SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy");
 
     private String[] timeLogColumnNames = {"Person name",
             "Log Description",
@@ -19,21 +24,36 @@ class TimeLogTableModel extends AbstractTableModel {
             "End DateTime",
             "Interval"};
 
-    private Object[][] timeLogTableData = {
-            {"Kathy1", "Kathy log description", new Date(), new Date(), new Integer(1)},
-            {"Kathy2", "Kathy log description", new Date(), new Date(), new Integer(2)},
-            {"Kathy3", "Kathy log description", new Date(), new Date(), new Integer(3)},
-            {"Kathy4", "Kathy log description", new Date(), new Date(), new Integer(4)},
-            {"Kathy5", "Kathy log description", new Date(), new Date(), new Integer(5)},
-            {"Kathy6", "Kathy log description", new Date(), new Date(), new Integer(6)}
-    };
+    private Object[][] timeLogTableData;
 
     public TimeLogTableModel() {}
 
     public TimeLogTableModel(List<TimeLog> tableData) {
 
+        setTimeLogTableData(tableData);
+
     }
-    
+
+    public void setTimeLogTableData(List<TimeLog> tableData) {
+        this.timeLogTableData = new Object[tableData.size()][getColumnCount()];
+
+        for (int i = 0; i < tableData.size(); i++) {
+            logger.trace("setTimeLogTableData " + tableData.get(i).getPerson().getName());
+            long interval = TimeTrackerUtil.getTimeLogInterval(tableData.get(i).getStartDateTime(), tableData.get(i).getEndDateTime());
+            //Object[] data = {tableData.get(i).getPerson().getName(), tableData.get(i).getLogDescription(), formatter.format(tableData.get(i).getStartDateTime()), formatter.format(tableData.get(i).getEndDateTime()), interval};
+
+            Object[] data = new Object[getColumnCount()];
+
+            data[0] = tableData.get(i).getPerson().getName();
+            data[1] = tableData.get(i).getLogDescription();
+            data[2] = formatter.format(tableData.get(i).getStartDateTime());
+            data[3] = formatter.format(tableData.get(i).getEndDateTime());
+            data[4] = interval;
+
+            timeLogTableData[i] = data;
+
+        }
+    }
 
     public int getColumnCount() {
         return timeLogColumnNames.length;

@@ -9,6 +9,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.*;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 import javax.swing.text.MaskFormatter;
 
@@ -31,14 +32,19 @@ abstract class ExampleGUI {
     private JTextField filterTextField = new JTextField();
     private JButton filterButton = new JButton("Search");
 
-    private JLabel totalTimeLabel = new JLabel("Total Time:(hours)");
+    private JLabel totalTimeLabel = new JLabel("Total Time:");
+    private JLabel totalTimeFormatLabel = new JLabel("(Hours)");
     private JTextField totalTimeTextField = new JTextField();
 
     private Container pane;
 
+    private TableModel tableModel;
+
     SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy");
 
     protected ExampleGUI(String frameTitle, TableModel tableModel) {
+
+        this.tableModel = tableModel;
 
         JFrame frame = new JFrame(frameTitle);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -64,7 +70,8 @@ abstract class ExampleGUI {
         addTextField(pane, filterTextField, 1, 2);
         addButton(pane, filterButton, 2, 2);
 
-        JTable timeLogTable = new JTable(tableModel);
+        JTable timeLogTable = new JTable(this.tableModel);
+
         //timeLogTable.setPreferredScrollableViewportSize(new Dimension(800, 70));
         timeLogTable.setFillsViewportHeight(true);
 
@@ -82,6 +89,8 @@ abstract class ExampleGUI {
         addTextField(pane, totalTimeTextField, 1, 4);
         totalTimeTextField.setEditable(false);
 
+        addLabel(pane, totalTimeFormatLabel, 2, 4, GridBagConstraints.LINE_START);
+
         //Display the window.
         frame.pack();
         frame.setVisible(true);
@@ -93,6 +102,16 @@ abstract class ExampleGUI {
         gridBagConstraints.gridx = gridx;
         gridBagConstraints.gridy = gridy;
         gridBagConstraints.anchor = GridBagConstraints.LINE_END;
+        gridBagConstraints.insets = new Insets(0,5,0,0);
+        pane.add(label, gridBagConstraints);
+    }
+
+    private void addLabel(Container pane, JLabel label, int gridx, int gridy, int anchor) {
+        GridBagConstraints gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.fill = GridBagConstraints.NONE;
+        gridBagConstraints.gridx = gridx;
+        gridBagConstraints.gridy = gridy;
+        gridBagConstraints.anchor = anchor;
         gridBagConstraints.insets = new Insets(0,5,0,0);
         pane.add(label, gridBagConstraints);
     }
@@ -193,5 +212,7 @@ abstract class ExampleGUI {
         }
         return formatter;
     }
+
+    public TableModel getTableModel() {return tableModel;}
 
 }

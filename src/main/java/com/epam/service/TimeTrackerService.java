@@ -7,6 +7,7 @@ import com.epam.model.TimeLog;
 import com.epam.sql.PersonDao;
 import com.epam.sql.SqlDaoFactory;
 import com.epam.sql.TimeLogDao;
+import com.epam.util.TimeTrackerUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -14,7 +15,6 @@ import java.sql.Connection;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 public class TimeTrackerService {
 
@@ -71,7 +71,7 @@ public class TimeTrackerService {
 
     public void createTimeLog (String personName, String logDescription, Date startDateTime, Date endDateTime) {
 
-        logger.trace("createTimeLog.personName", personName);
+        logger.trace("createTimeLog.personName " + personName);
 
         Person person;
         TimeLog timeLog;
@@ -117,7 +117,7 @@ public class TimeTrackerService {
 
 
             logger.trace("getTotalTime timeLog " + timeLog.toString());
-            totalTimeInHours += getTimeLogInterval(timeLog.getEndDateTime(), timeLog.getStartDateTime());
+            totalTimeInHours += TimeTrackerUtil.getTimeLogInterval(timeLog.getStartDateTime(), timeLog.getEndDateTime());
             logger.trace("getTotalTime foreach " + totalTimeInHours);
         }
 
@@ -126,18 +126,5 @@ public class TimeTrackerService {
         return totalTimeInHours;
     }
 
-    public long getTimeLogInterval(Date oldDate, Date newDate) {
-
-        TimeUnit timeUnit = TimeUnit.HOURS;
-
-        Long diffInMillis = 0L;
-
-        logger.trace("getTimeLogInterval.oldDate = " + oldDate.getTime());
-        logger.trace("getTimeLogInterval.newDate = " + newDate.getTime());
-
-        diffInMillis = oldDate.getTime() - newDate.getTime();
-
-        return timeUnit.convert(diffInMillis, TimeUnit.MILLISECONDS);
-    }
 
 }

@@ -7,6 +7,7 @@
         <Property name="Service">logs/Service.log</Property>
         <Property name="Sql">logs/Sql.log</Property>
         <Property name="View">logs/View.log</Property>
+        <Property name="Util">logs/Util.log</Property>
 
     </Properties>
 
@@ -31,6 +32,9 @@
             <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
         </File>
         <File name="View-all" fileName="${View}" append="true">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
+        </File>
+        <File name="Util-all" fileName="${Util}" append="true">
             <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
         </File>
     </Appenders>
@@ -62,6 +66,10 @@
 
         <Logger name="com.epam.view" additivity="false" level="ALL">
             <AppenderRef ref="View-all" level="ALL" />
+        </Logger>
+
+        <Logger name="com.epam.util" additivity="false" level="ALL">
+            <AppenderRef ref="Util-all" level="ALL" />
         </Logger>
 
     </Loggers>
