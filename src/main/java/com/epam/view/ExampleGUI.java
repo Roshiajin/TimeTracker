@@ -1,5 +1,6 @@
 package com.epam.view;
 
+import com.epam.util.TimeTrackerUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -9,8 +10,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.*;
-import javax.swing.event.TableModelListener;
-import javax.swing.table.TableModel;
 import javax.swing.text.MaskFormatter;
 
 
@@ -31,6 +30,7 @@ abstract class ExampleGUI {
     private JLabel filterLabel = new JLabel("Filter:");
     private JTextField filterTextField = new JTextField();
     private JButton filterButton = new JButton("Search");
+    private JButton filterClearButton = new JButton("Clear");
 
     private JLabel totalTimeLabel = new JLabel("Total Time:");
     private JLabel totalTimeFormatLabel = new JLabel("(Hours)");
@@ -38,11 +38,11 @@ abstract class ExampleGUI {
 
     private Container pane;
 
-    private TableModel tableModel;
+    private TimeLogTableModel tableModel;
 
-    SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy");
+    SimpleDateFormat formatter = TimeTrackerUtil.formatter;
 
-    protected ExampleGUI(String frameTitle, TableModel tableModel) {
+    protected ExampleGUI(String frameTitle, TimeLogTableModel tableModel) {
 
         this.tableModel = tableModel;
 
@@ -64,15 +64,15 @@ abstract class ExampleGUI {
         addTextField(pane, logDescriptionTextField, 1, 1);
         addDateFormattedTextField(pane, startDateTimeTextField, 2, 1);
         addDateFormattedTextField(pane, endDateTimeTextField, 3, 1);
-        addButton(pane, createTimeLogButton, 4, 1);
+        addButton(pane, createTimeLogButton, 4, 1, GridBagConstraints.LINE_START);
 
         addLabel(pane, filterLabel, 0, 2);
         addTextField(pane, filterTextField, 1, 2);
-        addButton(pane, filterButton, 2, 2);
+        addButton(pane, filterButton, 2, 2, GridBagConstraints.LINE_START);
+        addButton(pane, filterClearButton, 2, 2, GridBagConstraints.LINE_END);
 
         JTable timeLogTable = new JTable(this.tableModel);
 
-        //timeLogTable.setPreferredScrollableViewportSize(new Dimension(800, 70));
         timeLogTable.setFillsViewportHeight(true);
 
         JScrollPane timeLogScrollPane = new JScrollPane(timeLogTable);
@@ -132,9 +132,7 @@ abstract class ExampleGUI {
     private void addDateFormattedTextField(Container pane, JFormattedTextField textField, int gridx, int gridy) {
 
         Date date = new Date();
-        //SimpleDateFormat formatter = new SimpleDateFormat("HH:mm dd-MM-yyyy");
         String dateString = formatter.format(date);
-        //textField = new JFormattedTextField(createFormatter("##:## ##-##-####"));
         textField.setColumns(17);
         textField.setText(dateString);
 
@@ -150,12 +148,12 @@ abstract class ExampleGUI {
         pane.add(textField, gridBagConstraints);
     }
 
-    private void addButton(Container pane, JButton jButton, int gridx, int gridy) {
+    private void addButton(Container pane, JButton jButton, int gridx, int gridy, int anchor) {
         GridBagConstraints gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.fill = GridBagConstraints.NONE;
         gridBagConstraints.gridx = gridx;
         gridBagConstraints.gridy = gridy;
-        gridBagConstraints.anchor = GridBagConstraints.LINE_START;
+        gridBagConstraints.anchor = anchor;
         gridBagConstraints.insets = new Insets(0,5,0,5);
         jButton.setMinimumSize(new Dimension(75, 20));
         jButton.setPreferredSize(new Dimension(75, 20));
@@ -170,15 +168,27 @@ abstract class ExampleGUI {
         filterButton.addActionListener(a);
     }
 
-    public String getPersonName() {return personNameTextField.getText();}
+    public void addFilterClearListener(ActionListener a) {
+        filterClearButton.addActionListener(a);
+    }
 
-    public String getLogDescription() {return logDescriptionTextField.getText();}
+    public void setPersonName(String personName) {
+        personNameTextField.setText(personName);
+    }
+
+    public String getPersonName() {return personNameTextField.getText().trim();}
+
+    public void setLogDescription(String logDescription) {
+        logDescriptionTextField.setText(logDescription);
+    }
+
+    public String getLogDescription() {return logDescriptionTextField.getText().trim();}
 
     public Date getStartDateTime() {
         Date startDateTime = new Date();
         try {
             logger.trace("ExampleGUI.getStartDateTime " + startDateTimeTextField.getText());
-            startDateTime = formatter.parse(startDateTimeTextField.getText());
+            startDateTime = formatter.parse(startDateTimeTextField.getText().trim());
             logger.trace("ExampleGUI.getStartDateTime " + startDateTime.toString());
 
         } catch (ParseException e) {
@@ -190,18 +200,22 @@ abstract class ExampleGUI {
     public Date getEndDateTime() {
         Date endDateTime = new Date();
         try {
-            endDateTime = formatter.parse(endDateTimeTextField.getText());
+            endDateTime = formatter.parse(endDateTimeTextField.getText().trim());
         } catch (ParseException e) {
             logger.catching(e);
         }
         return endDateTime;
     }
 
-    public String getFilter() {return filterTextField.getText();}
+    public void setFilter(String s) {
+        filterTextField.setText(s);
+    }
+
+    public String getFilter() {return filterTextField.getText().trim();}
 
     public void setTotalTime(String s) { totalTimeTextField.setText(s);}
 
-    public String getTotalTime() {return totalTimeTextField.getText();}
+    public String getTotalTime() {return totalTimeTextField.getText().trim();}
 
     private MaskFormatter createFormatter(String s) {
         MaskFormatter formatter = null;
@@ -213,6 +227,11 @@ abstract class ExampleGUI {
         return formatter;
     }
 
-    public TableModel getTableModel() {return tableModel;}
+    public TimeLogTableModel getTableModel() {return tableModel;}
+
+    public void showMessage(String message, String title) {
+        JOptionPane.showMessageDialog(null,
+                message, title, JOptionPane.PLAIN_MESSAGE);
+    }
 
 }

@@ -48,6 +48,7 @@ public abstract class AbstractDao<T extends Identified<PK>, PK extends Integer> 
             ResultSet rs = statement.executeQuery();
             list = parseResultSet(rs);
         } catch (Exception e) {
+            logger.catching(e);
             throw new PersistException(e);
         }
         if (list == null || list.size() == 0) {
@@ -67,6 +68,7 @@ public abstract class AbstractDao<T extends Identified<PK>, PK extends Integer> 
             ResultSet rs = statement.executeQuery();
             list = parseResultSet(rs);
         } catch (Exception e) {
+            logger.catching(e);
             throw new PersistException(e);
         }
         return list;
@@ -98,9 +100,11 @@ public abstract class AbstractDao<T extends Identified<PK>, PK extends Integer> 
                     generatedId = rs.getInt(1);
                 }
             } catch (Exception e) {
+                logger.catching(e);
                 throw new PersistException("On getting generated keys");
             }
         } catch (Exception e) {
+            logger.catching(e);
             throw new PersistException(e);
         }
         // Получаем только что вставленную запись
@@ -115,6 +119,7 @@ public abstract class AbstractDao<T extends Identified<PK>, PK extends Integer> 
             }
             persistInstance = list.iterator().next();
         } catch (Exception e) {
+            logger.catching(e);
             throw new PersistException(e);
         }
         return persistInstance;
@@ -133,6 +138,7 @@ public abstract class AbstractDao<T extends Identified<PK>, PK extends Integer> 
                 throw new PersistException("On update modify more then 1 record: " + count);
             }
         } catch (Exception e) {
+            logger.catching(e);
             throw new PersistException(e);
         }
     }
@@ -144,6 +150,7 @@ public abstract class AbstractDao<T extends Identified<PK>, PK extends Integer> 
             try {
                 statement.setObject(1, object.getId());
             } catch (Exception e) {
+                logger.catching(e);
                 throw new PersistException(e);
             }
             int count = statement.executeUpdate();
@@ -152,6 +159,7 @@ public abstract class AbstractDao<T extends Identified<PK>, PK extends Integer> 
             }
             statement.close();
         } catch (Exception e) {
+            logger.catching(e);
             throw new PersistException(e);
         }
     }
@@ -186,6 +194,7 @@ public abstract class AbstractDao<T extends Identified<PK>, PK extends Integer> 
                     m.updateDependence(owner, connection);
                 }
             } catch (Exception e) {
+                logger.catching(e);
                 throw new PersistException("Exception on save dependence in relation " + m + ".", e);
             }
         }

@@ -46,6 +46,7 @@ public class SqlDaoFactory implements DaoFactory<Connection> {
     public GenericDao getDao(Connection connection, Class dtoClass) throws PersistException {
         DaoCreator creator = creators.get(dtoClass);
         if (creator == null) {
+            logger.trace("getDao: creator is null");
             throw new PersistException("Dao object for " + dtoClass + " not found.");
         }
         return creator.create(connection);

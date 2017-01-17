@@ -56,12 +56,14 @@ public class TimeTrackerService {
 
         Person person = null;
 
-        logger.trace("service.getPersonNyName", personName);
+        logger.trace("service.getPersonByName", personName);
 
         try {
             person = personDao.getByName(personName);
 
-            logger.trace("service.getPersonNyName", person.toString());
+            if (person != null) {
+                logger.trace("service.getPersonByName", person.toString());
+            }
         } catch (PersistException e) {
             logger.catching(e);
         }
@@ -69,7 +71,7 @@ public class TimeTrackerService {
         return person;
     }
 
-    public void createTimeLog (String personName, String logDescription, Date startDateTime, Date endDateTime) {
+    public void createTimeLog (String personName, String logDescription, Date startDateTime, Date endDateTime) throws PersistException {
 
         logger.trace("createTimeLog.personName " + personName);
 
@@ -88,6 +90,7 @@ public class TimeTrackerService {
 
         } catch (PersistException e) {
             logger.catching(e);
+            new PersistException(e);
         }
 
     }
@@ -98,13 +101,17 @@ public class TimeTrackerService {
 
         try {
             if (person == null) {
+                logger.trace("getPersonTimeLog: person is null");
                 personTimeLog = timeLogDao.getAll();
             } else {
+                logger.trace("getPersonTimeLog: person is NOT null");
                 personTimeLog = timeLogDao.getByPerson(person);
             }
         } catch (PersistException e) {
             logger.catching(e);
         }
+
+        logger.trace("getPersonTimeLog: personTimeLog size is " + personTimeLog.size());
 
         return personTimeLog;
     }
@@ -113,15 +120,14 @@ public class TimeTrackerService {
 
         Long totalTimeInHours = 0L;
 
+        logger.trace("getTotalTime: timeLogs.size() = " + timeLogs.size());
+
         for (TimeLog timeLog : timeLogs) {
 
-
-            logger.trace("getTotalTime timeLog " + timeLog.toString());
             totalTimeInHours += TimeTrackerUtil.getTimeLogInterval(timeLog.getStartDateTime(), timeLog.getEndDateTime());
-            logger.trace("getTotalTime foreach " + totalTimeInHours);
         }
 
-        logger.trace("getTotalTime = " + totalTimeInHours);
+        logger.trace("getTotalTime: " + totalTimeInHours);
 
         return totalTimeInHours;
     }

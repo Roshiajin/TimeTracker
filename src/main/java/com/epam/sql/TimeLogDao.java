@@ -65,6 +65,7 @@ public class TimeLogDao extends AbstractDao<TimeLog, Integer> {
                 result.add(timeLog);
             }
         } catch (Exception e) {
+            logger.catching(e);
             throw new PersistException(e);
         }
         return result;
@@ -74,8 +75,6 @@ public class TimeLogDao extends AbstractDao<TimeLog, Integer> {
     protected void prepareStatementForInsert(PreparedStatement statement, TimeLog object) throws PersistException {
 
         try {
-//            Date startDateTime = convert(object.getStartDateTime());
-//            Date endDateTime = convert(object.getEndDateTime());
             int personId = (object.getPerson() == null || object.getPerson().getId() == null) ? -1
                     : object.getPerson().getId();
 
@@ -88,6 +87,7 @@ public class TimeLogDao extends AbstractDao<TimeLog, Integer> {
             logger.trace("prepareStatementForInsert.endDateTime " +  object.getEndDateTime().getTime());
 
         } catch (Exception e) {
+            logger.catching(e);
             throw new PersistException(e);
         }
 
@@ -106,6 +106,7 @@ public class TimeLogDao extends AbstractDao<TimeLog, Integer> {
             statement.setInt(5, object.getId());
 
         } catch (Exception e) {
+            logger.catching(e);
             throw new PersistException(e);
         }
 
@@ -120,12 +121,17 @@ public class TimeLogDao extends AbstractDao<TimeLog, Integer> {
 
     public List<TimeLog> getByPerson(Person person) throws PersistException {
         List<TimeLog> list;
-        String sql = getSelectQuery() + " WHERE person_id = ?";
+        String sql = getSelectQuery();
+        sql += " WHERE person_id = ?";
+        logger.trace("getByPerson: sql = " + sql);
         try (PreparedStatement statement = getConnection().prepareStatement(sql)) {
-            statement.setInt(person.getId(), 1);
+            logger.trace("getByPerson: person_id = " + person.getId());
+
+            statement.setInt(1, person.getId());
             ResultSet rs = statement.executeQuery();
             list = parseResultSet(rs);
         } catch (Exception e) {
+            logger.catching(e);
             throw new PersistException(e);
         }
         return list;

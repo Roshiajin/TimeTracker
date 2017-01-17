@@ -12,7 +12,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Created by Alexander_Gaptullin on 12/21/2016.
@@ -62,6 +61,7 @@ public class PersonDao extends AbstractDao<Person, Integer> {
                 result.add(person);
             }
         } catch (Exception e) {
+            logger.catching(e);
             throw new PersistException(e);
         }
         return result;
@@ -72,6 +72,7 @@ public class PersonDao extends AbstractDao<Person, Integer> {
         try {
             statement.setString(1, object.getName());
         } catch (Exception e) {
+            logger.catching(e);
             throw new PersistException(e);
         }
     }
@@ -82,6 +83,7 @@ public class PersonDao extends AbstractDao<Person, Integer> {
             statement.setString(1, object.getName());
             statement.setInt(2, object.getId());
         } catch (Exception e) {
+            logger.catching(e);
             throw new PersistException(e);
         }
     }
@@ -90,11 +92,13 @@ public class PersonDao extends AbstractDao<Person, Integer> {
         List<Person> list;
         String sql = getSelectQuery();
         sql += " WHERE name = ?";
+        logger.trace("getByName: sql = " + sql);
         try (PreparedStatement statement = getConnection().prepareStatement(sql)) {
             statement.setString(1, personName);
             ResultSet rs = statement.executeQuery();
             list = parseResultSet(rs);
         } catch (Exception e) {
+            logger.catching(e);
             throw new PersistException(e);
         }
         if (list == null || list.size() == 0) {
