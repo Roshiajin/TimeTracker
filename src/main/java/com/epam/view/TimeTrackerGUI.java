@@ -6,8 +6,10 @@ import com.epam.service.TimeTrackerService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 
 public class TimeTrackerGUI extends ExampleGUI {
@@ -28,6 +30,7 @@ public class TimeTrackerGUI extends ExampleGUI {
     }
 
     void update(List<TimeLog> timeLogs) {
+
         getTableModel().setTimeLogTableData(timeLogs);
         setTotalTime(String.valueOf(service.getTotalTime(timeLogs)));
     }
@@ -103,6 +106,48 @@ public class TimeTrackerGUI extends ExampleGUI {
 
             update(service.gettAllTimeLog());
 
+        }
+    }
+
+    class TimeLogWorker extends SwingWorker<List, String> {
+
+        String action;
+
+        TimeLogWorker(String action) {
+          this.action = action;
+        }
+
+        @Override
+        protected List<TimeLog> doInBackground() throws Exception {
+            List<TimeLog> list;
+
+            System.out.println("Start TimeLogSwingWorker");
+            logger.trace("Start TimeLogSwingWorker");
+
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException ex) {}
+
+            String personName = getFilter();
+
+            if (personName == null || personName.isEmpty()) {
+                list = service.gettAllTimeLog();
+                return list;
+            }
+
+            Person person = service.getPersonByName(personName);
+
+            if (person == null) {
+                showMessage("No such person name found!","Error!");
+                return null;
+            }
+
+            list = service.getPersonTimeLog(person);
+
+            logger.trace("End TimeLogSwingWorker");
+            System.out.println("End TimeLogSwingWorker");
+
+            return list;
         }
     }
 
