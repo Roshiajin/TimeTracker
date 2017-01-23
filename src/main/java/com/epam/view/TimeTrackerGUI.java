@@ -9,7 +9,6 @@ import org.apache.logging.log4j.Logger;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.List;
 
 public class TimeTrackerGUI extends ExampleGUI {
@@ -17,6 +16,8 @@ public class TimeTrackerGUI extends ExampleGUI {
     private static final Logger logger = LogManager.getLogger(TimeTrackerGUI.class);
 
     private TimeTrackerService service;
+
+    private TimeLogWorker worker;
 
     public TimeTrackerGUI(TimeTrackerService service, TimeLogTableModel tableModel) {
 
@@ -63,7 +64,9 @@ public class TimeTrackerGUI extends ExampleGUI {
                     showMessage("Check logs for error!", "Operation failed!");
                 }
 
-                update(service.gettAllTimeLog());
+                worker = new TimeLogWorker("");
+                worker.execute();
+
                 setPersonName("");
                 setLogDescription("");
 
@@ -74,27 +77,8 @@ public class TimeTrackerGUI extends ExampleGUI {
     class FilterEventListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
 
-            String personName = getFilter();
-
-            String message = "";
-            message += "FilterButton was pressed\n";
-            message += "value: " + personName;
-
-            logger.trace(message);
-
-            if (personName == null || personName.isEmpty()) {
-                update(service.gettAllTimeLog());
-                return;
-            }
-
-            Person person = service.getPersonByName(personName);
-
-            if (person == null) {
-                showMessage("No such person name found!","Error!");
-                return;
-            }
-
-            update(service.getPersonTimeLog(person));
+            worker = new TimeLogWorker(getFilter());
+            worker.execute();
 
         }
     }
@@ -104,50 +88,75 @@ public class TimeTrackerGUI extends ExampleGUI {
 
             setFilter("");
 
-            update(service.gettAllTimeLog());
+            worker = new TimeLogWorker("");
+            worker.execute();
 
         }
     }
 
     class TimeLogWorker extends SwingWorker<List, String> {
 
-        String action;
+        String filter;
 
-        TimeLogWorker(String action) {
-          this.action = action;
+        TimeLogWorker(String filter) {
+          this.filter = filter;
         }
 
         @Override
         protected List<TimeLog> doInBackground() throws Exception {
             List<TimeLog> list;
 
-            System.out.println("Start TimeLogSwingWorker");
+            //System.out.println("Start TimeLogSwingWorker");
             logger.trace("Start TimeLogSwingWorker");
 
-            try {
-                Thread.sleep(5000);
-            } catch (InterruptedException ex) {}
+//            try {
+//                Thread.sleep(5000);
+//            } catch (InterruptedException ex) {}
 
-            String personName = getFilter();
+            String personName = this.filter;
 
             if (personName == null || personName.isEmpty()) {
                 list = service.gettAllTimeLog();
+                logger.trace("End TimeLogSwingWorker: list.size="+list.size());
+                //System.out.println("End TimeLogSwingWorker");
                 return list;
             }
 
             Person person = service.getPersonByName(personName);
 
             if (person == null) {
-                showMessage("No such person name found!","Error!");
+                logger.trace("End TimeLogSwingWorker: list is null");
+                //System.out.println("End TimeLogSwingWorker");
                 return null;
             }
 
             list = service.getPersonTimeLog(person);
 
-            logger.trace("End TimeLogSwingWorker");
-            System.out.println("End TimeLogSwingWorker");
+            logger.trace("End TimeLogSwingWorker: list.size="+list.size());
+            //System.out.println("End TimeLogSwingWorker");
 
             return list;
+        }
+
+        @Override
+        protected void done() {
+            SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        List<TimeLog> list = get();
+                        if (list == null) {
+                            showMessage("No such person name found!","Error!");
+                        } else {
+                            update(list);
+                        }
+
+                    } catch (Exception ex) {
+                        logger.catching(ex);
+                        throw new RuntimeException(ex);
+                    }
+                }
+            });
         }
     }
 
