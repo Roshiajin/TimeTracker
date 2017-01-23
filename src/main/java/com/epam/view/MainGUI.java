@@ -10,12 +10,13 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.*;
+
 import javax.swing.text.MaskFormatter;
 
 
-abstract class ExampleGUI {
+public abstract class MainGUI {
 
-    private static final Logger logger = LogManager.getLogger(ExampleGUI.class);
+    private static final Logger logger = LogManager.getLogger(MainGUI.class);
 
     private JLabel personNameLabel = new JLabel("Person Name:");
     private JLabel logDescriptionLabel = new JLabel("Log Description:");
@@ -42,7 +43,7 @@ abstract class ExampleGUI {
 
     SimpleDateFormat formatter = TimeTrackerUtil.formatter;
 
-    protected ExampleGUI(String frameTitle, TimeLogTableModel tableModel) {
+    protected MainGUI(String frameTitle, TimeLogTableModel tableModel) {
 
         this.tableModel = tableModel;
 
@@ -187,9 +188,9 @@ abstract class ExampleGUI {
     public Date getStartDateTime() {
         Date startDateTime = new Date();
         try {
-            logger.trace("ExampleGUI.getStartDateTime " + startDateTimeTextField.getText());
+            logger.trace("MainGUI.getStartDateTime " + startDateTimeTextField.getText());
             startDateTime = formatter.parse(startDateTimeTextField.getText().trim());
-            logger.trace("ExampleGUI.getStartDateTime " + startDateTime.toString());
+            logger.trace("MainGUI.getStartDateTime " + startDateTime.toString());
 
         } catch (ParseException e) {
             logger.catching(e);
