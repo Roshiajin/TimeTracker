@@ -2,7 +2,6 @@ package com.epam;
 
 import com.epam.controller.TimeLogController;
 import com.epam.service.TimeTrackerService;
-import com.epam.util.TimeTrackerUtil;
 import com.epam.view.TimeLogTableModel;
 import com.epam.view.TimeTrackerGUI;
 
@@ -15,14 +14,15 @@ public class RunTimeTracker {
 
         TimeTrackerService service = new TimeTrackerService();
 
-        TimeLogTableModel tableModel = new TimeLogTableModel(service.gettAllTimeLog());
+        TimeLogTableModel tableModel = new TimeLogTableModel(service);
 
-        TimeTrackerGUI view = new TimeTrackerGUI(service, tableModel);
+        TimeTrackerGUI view = new TimeTrackerGUI(tableModel);
 
         TimeLogController controller = new TimeLogController(service);
 
         controller.addModel(tableModel);
         controller.addView(view);
+        controller.initModel(service.gettAllTimeLog());
 
         view.addController(controller);
 

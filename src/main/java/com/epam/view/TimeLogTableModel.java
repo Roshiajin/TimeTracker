@@ -1,11 +1,13 @@
 package com.epam.view;
 
 import com.epam.model.TimeLog;
+import com.epam.service.TimeTrackerService;
 import com.epam.util.TimeTrackerUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.swing.table.AbstractTableModel;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -19,16 +21,22 @@ public class TimeLogTableModel extends AbstractTableModel {
             "End DateTime",
             "Interval"};
 
-    private List<TimeLog> timeLogTableData;
+    private List<TimeLog> timeLogTableData = new ArrayList<TimeLog>();
 
-    public TimeLogTableModel(List tableData) {
+    private TimeTrackerService service;
 
-        this.timeLogTableData = tableData;
+    public TimeLogTableModel(TimeTrackerService service) {
+        this.service = service;
+    }
 
+
+    public long getTotalTime() {
+        return service.getTotalTime(this.timeLogTableData);
     }
 
     public void setTimeLogTableData(List<TimeLog> tableData) {
 
+        logger.trace("setTimeLogTableData: tableData.size = "+tableData.size());
         this.timeLogTableData = tableData;
     }
 
@@ -36,8 +44,6 @@ public class TimeLogTableModel extends AbstractTableModel {
     public int getColumnCount() {
         return this.timeLogColumnNames.length;
     }
-
-
 
     @Override
     public int getRowCount() {
@@ -66,7 +72,6 @@ public class TimeLogTableModel extends AbstractTableModel {
                 return "";
         }
     }
-
 
     public String getColumnName(int col) {
         return timeLogColumnNames[col];

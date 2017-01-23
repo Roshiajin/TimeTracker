@@ -38,14 +38,9 @@ public class TimeLogController {
 
     public void initModel(List modelData) {
         model.setTimeLogTableData(modelData);
+        view.update();
     }
 
-    void update(List<TimeLog> timeLogs) {
-
-        view.getTableModel().setTimeLogTableData(timeLogs);
-        view.getTableModel().fireTableDataChanged();
-        view.setTotalTime(String.valueOf(service.getTotalTime(timeLogs)));
-    }
 
     public CreateTimeLogEventListener getCreateTimeLogEventListener() {
         return new CreateTimeLogEventListener();
@@ -165,7 +160,7 @@ public class TimeLogController {
                         if (list == null) {
                             view.showMessage("No such person name found!","Error!");
                         } else {
-                            update(list);
+                            initModel(list);
                         }
 
                     } catch (Exception ex) {
@@ -176,9 +171,5 @@ public class TimeLogController {
             });
         }
     }
-
-
-
-
 
 }

@@ -1,42 +1,31 @@
 package com.epam.view;
 
 import com.epam.controller.TimeLogController;
-import com.epam.model.Person;
-import com.epam.model.TimeLog;
-import com.epam.service.TimeTrackerService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.List;
 
 public class TimeTrackerGUI extends MainGUI {
 
     private static final Logger logger = LogManager.getLogger(TimeTrackerGUI.class);
 
-    private TimeTrackerService service;
-
-    public TimeTrackerGUI(TimeTrackerService service, TimeLogTableModel tableModel) {
+    public TimeTrackerGUI(TimeLogTableModel tableModel) {
 
         super("TimeTracker", tableModel);
-        this.service = service;
 
-        setTotalTime(String.valueOf( service.getTotalTime( service.gettAllTimeLog() )));
+        setTotalTime(String.valueOf(getTableModel().getTotalTime()));
     }
 
     public void addController(TimeLogController controller) {
+        logger.trace("addController");
         addCreateTimeLogListener(controller.getCreateTimeLogEventListener());
         addFilterListener(controller.getFilterEventListener());
         addFilterClearListener(controller.getFilterClearEventListener());
     }
 
-    void update(List<TimeLog> timeLogs) {
-
-        getTableModel().setTimeLogTableData(timeLogs);
+    public void update() {
+        logger.trace("update()");
         getTableModel().fireTableDataChanged();
-        setTotalTime(String.valueOf(service.getTotalTime(timeLogs)));
+        setTotalTime(String.valueOf(getTableModel().getTotalTime()));
     }
 
 }
