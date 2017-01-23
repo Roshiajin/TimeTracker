@@ -5,21 +5,22 @@ import com.epam.util.TimeTrackerUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
 
 
-public class TimeLogTableModel extends DefaultTableModel {
+public class TimeLogTableModel extends AbstractTableModel {
 
     private static final Logger logger = LogManager.getLogger(TimeLogTableModel.class);
 
     private String[] timeLogColumnNames;
 
-    private Object[][] timeLogTableData;
+    private List<TimeLog> timeLogTableData;
 
-    public TimeLogTableModel(Object[][] tableData, String[] tableHeaders) {
+    public TimeLogTableModel(List tableData, String[] tableHeaders) {
 
-        super(tableData, tableHeaders);
+        //super(tableData, tableHeaders);
         this.timeLogTableData = tableData;
         this.timeLogColumnNames = tableHeaders;
 
@@ -27,9 +28,51 @@ public class TimeLogTableModel extends DefaultTableModel {
 
     public void setTimeLogTableData(List<TimeLog> tableData) {
 
-        this.timeLogTableData = TimeTrackerUtil.getTimeLogAsObjectArray(tableData);
+        //this.timeLogTableData = TimeTrackerUtil.getTimeLogAsObjectArray(tableData);
 
-        setDataVector(this.timeLogTableData, this.timeLogColumnNames);
+        //setDataVector(this.timeLogTableData, this.timeLogColumnNames);
+
+        this.timeLogTableData = tableData;
+    }
+
+    @Override
+    public int getColumnCount() {
+        return this.timeLogColumnNames.length;
+    }
+
+
+
+    @Override
+    public int getRowCount() {
+        return timeLogTableData.size();
+    }
+
+    // this method is called to set the value of each cell
+    @Override
+    public Object getValueAt(int row, int column) {
+        TimeLog timeLog = null;
+        timeLog = timeLogTableData.get(row);
+
+        switch (column) {
+
+            case 0:
+                return timeLog.getPerson().getName();
+            case 1:
+                return timeLog.getLogDescription();
+            case 2:
+                return timeLog.getStartDateTime();
+            case 3:
+                return timeLog.getEndDateTime();
+            case 4:
+                return TimeTrackerUtil.getTimeLogInterval(timeLog.getStartDateTime(), timeLog.getEndDateTime());
+            default:
+                return "";
+        }
+    }
+
+
+    public String getColumnName(int col) {
+        return timeLogColumnNames[col];
     }
 
 }

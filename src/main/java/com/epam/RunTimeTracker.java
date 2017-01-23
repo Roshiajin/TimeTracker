@@ -20,7 +20,8 @@ public class RunTimeTracker {
                 "End DateTime",
                 "Interval"};
 
-        TimeLogTableModel tableModel = new TimeLogTableModel(TimeTrackerUtil.getTimeLogAsObjectArray(service.gettAllTimeLog()), timeLogColumnNames);
+        //TimeLogTableModel tableModel = new TimeLogTableModel(TimeTrackerUtil.getTimeLogAsObjectArray(service.gettAllTimeLog()), timeLogColumnNames);
+        TimeLogTableModel tableModel = new TimeLogTableModel(service.gettAllTimeLog(), timeLogColumnNames);
 
         new TimeTrackerGUI(service, tableModel);
 

@@ -33,6 +33,7 @@ public class TimeTrackerGUI extends ExampleGUI {
     void update(List<TimeLog> timeLogs) {
 
         getTableModel().setTimeLogTableData(timeLogs);
+        getTableModel().fireTableDataChanged();
         setTotalTime(String.valueOf(service.getTotalTime(timeLogs)));
     }
 
