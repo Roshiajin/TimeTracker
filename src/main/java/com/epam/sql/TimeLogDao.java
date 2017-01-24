@@ -38,17 +38,17 @@ public class TimeLogDao extends AbstractDao<TimeLog, Integer> {
 
     @Override
     public String getCreateQuery() {
-        return "insert into timelog (person_id, log_description, start_datetime, end_datetime) values (?, ?, ?, ?);";
+        return "insert into timelog (person_id, log_description, start_datetime, end_datetime) values (?, ?, ?, ?)";
     }
 
     @Override
     public String getUpdateQuery() {
-        return "update timelog set person_id = ?, log_description = ?, start_datetime = ?, end_datetime = ? where id = ?;";
+        return "update timelog set person_id = ?, log_description = ?, start_datetime = ?, end_datetime = ? where id = ?";
     }
 
     @Override
     public String getDeleteQuery() {
-        return "delete from timelog where id = ?;";
+        return "delete from timelog where id = ?";
     }
 
     @Override

@@ -1,9 +1,12 @@
 package com.epam;
 
 import com.epam.controller.TimeLogController;
+import com.epam.model.TimeLog;
 import com.epam.service.TimeTrackerService;
 import com.epam.view.TimeLogTableModel;
 import com.epam.view.TimeTrackerGUI;
+
+import java.util.List;
 
 /**
  * Created by Alexander_Gaptullin on 1/9/2017.
@@ -11,6 +14,8 @@ import com.epam.view.TimeTrackerGUI;
 public class RunTimeTracker {
 
     public RunTimeTracker() {
+
+        List<TimeLog> timeLogList;
 
         TimeTrackerService service = new TimeTrackerService();
 
@@ -22,7 +27,12 @@ public class RunTimeTracker {
 
         controller.addModel(tableModel);
         controller.addView(view);
-        controller.initModel(service.gettAllTimeLog());
+        //timeLogList = service.gettAllTimeLog();
+
+        //if (timeLogList!=null) {
+            controller.initModel(service.gettAllTimeLog());
+        //}
+
 
         view.addController(controller);
 

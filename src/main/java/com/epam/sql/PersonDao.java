@@ -27,17 +27,17 @@ public class PersonDao extends AbstractDao<Person, Integer> {
 
     @Override
     public String getCreateQuery() {
-        return "insert into person(name) values (?);";
+        return "insert into person(name) values (?)";
     }
 
     @Override
     public String getUpdateQuery() {
-        return "update person set name = ? where id = ?;";
+        return "update person set name = ? where id = ?";
     }
 
     @Override
     public String getDeleteQuery() {
-        return "delete from person where id = ?;";
+        return "delete from person where id = ?";
     }
 
     @Override

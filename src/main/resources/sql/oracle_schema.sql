@@ -26,9 +26,6 @@ create index i_timelog$person_id on timelog (person_id);
 -- Create/Recreate primary, unique and foreign key constraints 
 alter table timelog
   add constraint pk_timelog primary key (id);
-alter table timelog
-  add constraint fk_timelog2person foreign key (PERSON_ID)
-  references person (ID);
   
 -- Create sequence 
 create sequence seq_person

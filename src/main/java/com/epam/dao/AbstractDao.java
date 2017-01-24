@@ -43,6 +43,7 @@ public abstract class AbstractDao<T extends Identified<PK>, PK extends Integer> 
         List<T> list;
         String sql = getSelectQuery();
         sql += " WHERE id = ?";
+        logger.trace("SELECT SQL: "+sql);
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, key);
             ResultSet rs = statement.executeQuery();
@@ -88,6 +89,7 @@ public abstract class AbstractDao<T extends Identified<PK>, PK extends Integer> 
         int generatedId = 0;
         String generatedColumns[] = {"ID"};
 
+        logger.trace("CREATE SQL: "+sql);
         try (PreparedStatement statement = connection.prepareStatement(sql, generatedColumns)) {
             prepareStatementForInsert(statement, object);
             int count = statement.executeUpdate();
@@ -109,6 +111,7 @@ public abstract class AbstractDao<T extends Identified<PK>, PK extends Integer> 
         }
         // Получаем только что вставленную запись
         sql = getSelectQuery() + " WHERE id = ?";
+        logger.trace("SELECT SQL: "+sql);
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, generatedId);
 
@@ -131,7 +134,8 @@ public abstract class AbstractDao<T extends Identified<PK>, PK extends Integer> 
         saveDependences(object);
 
         String sql = getUpdateQuery();
-        try (PreparedStatement statement = connection.prepareStatement(sql);) {
+        logger.trace("UPDATE SQL: "+sql);
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
             prepareStatementForUpdate(statement, object); // заполнение аргументов запроса оставим на совесть потомков
             int count = statement.executeUpdate();
             if (count != 1) {
@@ -146,6 +150,7 @@ public abstract class AbstractDao<T extends Identified<PK>, PK extends Integer> 
     @Override
     public void delete(T object) throws PersistException {
         String sql = getDeleteQuery();
+        logger.trace("DELETE SQL: "+sql);
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             try {
                 statement.setObject(1, object.getId());
