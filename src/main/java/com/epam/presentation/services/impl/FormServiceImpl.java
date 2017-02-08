@@ -1,9 +1,10 @@
 package com.epam.presentation.services.impl;
 
-import com.epam.persistence.model.Person;
 import com.epam.persistence.model.TimeLog;
 import com.epam.presentation.services.FormService;
 import com.epam.utilities.calculations.TimeLogCalculation;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -15,8 +16,12 @@ import java.awt.event.ActionListener;
 import java.util.Date;
 import java.util.List;
 
+import static com.epam.utilities.Constants.Messages.MSG_PERSON_REQUIRED;
+
 @Component
 public class FormServiceImpl implements FormService {
+
+    private static final Logger logger = LogManager.getLogger(FormServiceImpl.class);
 
     @Autowired
     private FormAccessObject formAccessObject;
@@ -25,8 +30,8 @@ public class FormServiceImpl implements FormService {
         String personName = this.formAccessObject.getPersonName();
 
         if (personName.isEmpty()) {
-            showMessage(Constants.Errors.PERSON_REQUIRED, Constants.ComponentTitles.MESSAGE_ERROR);
-            throw new FormValidationException(Constants.Errors.PERSON_REQUIRED);
+            showMessage(MSG_PERSON_REQUIRED, Constants.ComponentTitles.MESSAGE_ERROR);
+            throw new FormValidationException(Constants.Errors.ERR_PERSON_REQUIRED);
         }
 
         return personName;
@@ -65,6 +70,9 @@ public class FormServiceImpl implements FormService {
     }
 
     public void update(final List<TimeLog> timeLog) {
+
+        logger.trace("update timeLog.size = " + timeLog.size());
+
         this.writeTimeLog(timeLog);
         this.setTotalTime(String.valueOf(TimeLogCalculation.getTotalTime(timeLog)));
     }

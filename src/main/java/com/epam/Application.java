@@ -7,6 +7,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 /**
  * Created by Alexander_Gaptullin on 12/19/2016.
  */
+
 public class Application {
 
     private static final String APPLICATION_CONTEXT = "spring/application-context.xml";

@@ -1,9 +1,11 @@
 package com.epam.presentation.access.impl;
 
-import com.epam.persistence.model.Person;
 import com.epam.persistence.model.TimeLog;
 import com.epam.presentation.access.FormAccessObject;
+import com.epam.presentation.services.impl.FormServiceImpl;
 import com.epam.presentation.view.MainGUI;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,6 +16,8 @@ import java.util.List;
 
 @Component
 public class FormAccessObjectImpl implements FormAccessObject {
+
+    private static final Logger logger = LogManager.getLogger(FormAccessObjectImpl.class);
 
     @Autowired
     private MainGUI form;
@@ -33,7 +37,13 @@ public class FormAccessObjectImpl implements FormAccessObject {
     public void setFilter(String name) { this.form.setFilter(name); }
 
     public void writeTimeLog(final List<TimeLog> timeLog) {
+        logger.trace("writeTimeLog:  this.form.getTimeLogTable().getModel().getRowCount() = "+ this.form.getTimeLogTable().getModel().getRowCount());
+
+        this.form.getTimeLogTable().getModel().getRowCount();
         this.form.getTableModel().setTimeLogTableData(timeLog);
+
+        this.form.getTimeLogTable().setModel(this.form.getTableModel());
+
     }
 
     public void setTotalTime(final String totalTime) {

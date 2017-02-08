@@ -42,16 +42,19 @@ public class Constants {
     }
 
     public static class Errors {
-        public static final String FORM_VALIDATION = "form.validation.exception";
-        public static final String NUMBER_REQUIRED = "form.number.required";
-        public static final String PERSON_REQUIRED = "form.field.person.required";
-        public static final String PERSON_NOT_FOUND = "form.request.person.not_found";
-
+        public static final String ERR_FORM_VALIDATION = "form.validation.exception";
+        public static final String ERR_NUMBER_REQUIRED = "form.number.required";
+        public static final String ERR_PERSON_REQUIRED = "form.field.person.required";
+        public static final String ERR_PERSON_NOT_FOUND = "form.request.person.not_found";
+        public static final String ERR_OPERATION_SUCCESS = "form.operation.success";
+        public static final String ERR_OPERATION_FAILED = "form.operation.failure";
     }
 
     public static class Messages {
-        public static final String OPERATION_SUCCESS = "form.operation.success";
-        public static final String OPERATION_FAILED = "form.operation.failure";
+        public static final String MSG_OPERATION_SUCCESS = "Time log added!";
+        public static final String MSG_OPERATION_FAILED = "Check logs for error!";
+        public static final String MSG_PERSON_REQUIRED = "Person name is empty!";
+        public static final String MSG_PERSON_NOT_FOUND = "No such person name found!";
     }
 
     public static class Formats {

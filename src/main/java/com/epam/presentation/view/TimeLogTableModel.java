@@ -20,19 +20,13 @@ public class TimeLogTableModel extends AbstractTableModel {
 
     private List<TimeLog> timeLogTableData = new ArrayList<TimeLog>();
 
-
-    public TimeLogTableModel() {
-    }
-
-    public long getTotalTime() {
-        //return service.getTotalTime(this.timeLogTableData);
-        return 0L;
-    }
-
     public void setTimeLogTableData(List<TimeLog> tableData) {
 
         logger.trace("setTimeLogTableData: tableData.size = "+tableData.size());
         this.timeLogTableData = tableData;
+        this.fireTableDataChanged();
+        logger.trace("setTimeLogTableData: this.getColumnCount() = "+this.getColumnCount());
+        logger.trace("setTimeLogTableData: this.getRowCount() = "+this.getRowCount());
     }
 
     @Override

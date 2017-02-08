@@ -40,6 +40,8 @@ public class MainGUI {
     private JLabel totalTimeFormatLabel = new JLabel("(Hours)");
     private JTextField totalTimeTextField = new JTextField();
 
+    private JTable timeLogTable;
+
     private Container pane;
 
     private JFrame frame;
@@ -73,14 +75,17 @@ public class MainGUI {
         addTextField(pane, logDescriptionTextField, 1, 1);
         addDateFormattedTextField(pane, startDateTimeTextField, 2, 1);
         addDateFormattedTextField(pane, endDateTimeTextField, 3, 1);
+        createTimeLogButton.setName("createTimeLogButton");
         addButton(pane, createTimeLogButton, 4, 1, GridBagConstraints.LINE_START);
 
         addLabel(pane, filterLabel, 0, 2);
         addTextField(pane, filterTextField, 1, 2);
+        filterButton.setName("filterButton");
         addButton(pane, filterButton, 2, 2, GridBagConstraints.LINE_START);
+        filterClearButton.setName("filterClearButton");
         addButton(pane, filterClearButton, 2, 2, GridBagConstraints.LINE_END);
 
-        JTable timeLogTable = new JTable(this.tableModel);
+        timeLogTable = new JTable(this.tableModel);
 
         timeLogTable.setFillsViewportHeight(true);
 
@@ -279,6 +284,10 @@ public class MainGUI {
         }
 
         return result;
+    }
+
+    public JTable getTimeLogTable() {
+        return this.timeLogTable;
     }
 
 }

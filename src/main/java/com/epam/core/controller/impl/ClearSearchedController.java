@@ -4,13 +4,18 @@ import com.epam.core.controller.Controller;
 import com.epam.persistence.model.TimeLog;
 import com.epam.persistence.services.DatabaseService;
 import com.epam.presentation.services.FormService;
+import com.epam.utilities.transformer.TimeLogToObjectArrayTransformer;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@Component
+@Component("ClearSearchedController")
 public class ClearSearchedController implements Controller {
+
+    private static final Logger logger = LogManager.getLogger(ClearSearchedController.class);
 
     @Autowired
     private FormService formService;
@@ -23,6 +28,8 @@ public class ClearSearchedController implements Controller {
         this.formService.setFilter("");
 
         List<TimeLog> timeLogs = this.databaseService.retrieveAll(TimeLog.class);
+
+        logger.trace("timeLogs.size = " + timeLogs.size());
 
         this.formService.update(timeLogs);
 

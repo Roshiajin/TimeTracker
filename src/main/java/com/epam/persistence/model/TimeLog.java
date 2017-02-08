@@ -25,11 +25,11 @@ public class TimeLog implements Serializable {
     @Viewed(name = "LogDescription")
     private String logDescription;
 
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     @Viewed(name = "StartDateTime")
     private java.util.Date startDateTime;
 
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     @Viewed(name = "EndDatetime")
     private java.util.Date endDatetime;
 

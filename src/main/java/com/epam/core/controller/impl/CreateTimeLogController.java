@@ -14,7 +14,10 @@ import javax.swing.*;
 import java.util.Date;
 import java.util.List;
 
-@Component
+import static com.epam.utilities.Constants.Messages.MSG_OPERATION_FAILED;
+import static com.epam.utilities.Constants.Messages.MSG_PERSON_REQUIRED;
+
+@Component("CreateTimeLogController")
 public class CreateTimeLogController implements Controller {
 
     private static final Logger logger = LogManager.getLogger(CreateTimeLogController.class);
@@ -38,6 +41,9 @@ public class CreateTimeLogController implements Controller {
             person.setName(personName);
             this.databaseService.create(person);
             person = this.databaseService.retrieveByField("name", personName, Person.class);
+        } else {
+            this.formService.showMessage(MSG_PERSON_REQUIRED, MSG_OPERATION_FAILED);
+            return;
         }
 
         String logDescription = this.formService.getLogDescription();
@@ -51,6 +57,8 @@ public class CreateTimeLogController implements Controller {
         this.databaseService.create(timeLog);
 
         List<TimeLog> timeLogs = this.databaseService.retrieveAll(TimeLog.class);
+
+        logger.trace("timeLogs.size = " + timeLogs.size());
 
         this.formService.update(timeLogs);
     }
