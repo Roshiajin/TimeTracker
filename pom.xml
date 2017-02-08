@@ -21,52 +21,119 @@
             </plugin>
         </plugins>
     </build>
-    <packaging>jar</packaging>
 
+    <packaging>jar</packaging>
     <name>timetracker</name>
-    <url>http://maven.apache.org</url>
 
     <properties>
+        <spring.version>4.2.4.RELEASE</spring.version>
+        <hibernate.version>4.3.10.Final</hibernate.version>
+        <hibernate.jpa.version>1.0.0.Final</hibernate.jpa.version>
+        <hibernate.validator.version>4.3.1.Final</hibernate.validator.version>
+        <mysql.connector.version>5.1.40</mysql.connector.version>
+        <intellij.forms.version>5.0</intellij.forms.version>
+        <h2.version>1.4.193</h2.version>
+        <oracle.version>11.2.0.3</oracle.version>
+        <junit.version>4.12</junit.version>
+        <log4j.version>2.7</log4j.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <dependencies>
 
+        <!-- Spring -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-orm</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <!-- Hibernate -->
+        <dependency>
+            <groupId>org.hibernate.javax.persistence</groupId>
+            <artifactId>hibernate-jpa-2.1-api</artifactId>
+            <version>${hibernate.jpa.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>${hibernate.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <version>${hibernate.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>${hibernate.validator.version}</version>
+        </dependency>
+
+        <!--MySQL JDBC driver-->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>5.1.40</version>
+            <version>${mysql.connector.version}</version>
         </dependency>
 
+        <!--H2 JDBC driver-->
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
-            <version>1.4.193</version>
+            <version>${h2.version}</version>
         </dependency>
 
+        <!--Oracle JDBC driver-->
         <dependency>
             <groupId>com.oracle</groupId>
             <artifactId>ojdbc5</artifactId>
-            <version>11.2.0.3</version>
+            <version>${oracle.version}</version>
         </dependency>
 
+        <!--Intellij IDEA form -->
+        <dependency>
+            <groupId>com.intellij</groupId>
+            <artifactId>forms_rt</artifactId>
+            <version>${intellij.forms.version}</version>
+        </dependency>
+
+        <!--Tests -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.12</version>
+            <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
 
+        <!--Logging -->
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-core</artifactId>
-            <version>2.7</version>
+            <version>${log4j.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-api</artifactId>
-            <version>2.7</version>
+            <version>${log4j.version}</version>
         </dependency>
 
     </dependencies>
