@@ -34,6 +34,11 @@ public class CreateTimeLogController implements Controller {
 
         Person person = null;
 
+        if (personName.isEmpty()) {
+            this.formService.showMessage(MSG_PERSON_REQUIRED, MSG_OPERATION_FAILED);
+            return;
+        }
+
         person = this.databaseService.retrieveByField("name", personName, Person.class);
 
         if (person == null) {
@@ -41,9 +46,6 @@ public class CreateTimeLogController implements Controller {
             person.setName(personName);
             this.databaseService.create(person);
             person = this.databaseService.retrieveByField("name", personName, Person.class);
-        } else {
-            this.formService.showMessage(MSG_PERSON_REQUIRED, MSG_OPERATION_FAILED);
-            return;
         }
 
         String logDescription = this.formService.getLogDescription();
@@ -59,6 +61,9 @@ public class CreateTimeLogController implements Controller {
         List<TimeLog> timeLogs = this.databaseService.retrieveAll(TimeLog.class);
 
         logger.trace("timeLogs.size = " + timeLogs.size());
+
+        this.formService.setPersonName("");
+        this.formService.setLogDescription("");
 
         this.formService.update(timeLogs);
     }

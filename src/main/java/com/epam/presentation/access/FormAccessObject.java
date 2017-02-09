@@ -20,4 +20,5 @@ public interface FormAccessObject {
     void showMessage(String message, String title);
     void showForm();
     void addButtonActionListener(ActionListener listener, String buttonName);
+    void setLogDescription(String logDescription);
 }

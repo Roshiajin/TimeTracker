@@ -21,4 +21,5 @@ public interface FormService {
     void showForm();
     void addButtonActionListener(ActionListener listener, String buttonName);
     void update(final List<TimeLog> timeLog);
+    void setLogDescription(String logDescription);
 }

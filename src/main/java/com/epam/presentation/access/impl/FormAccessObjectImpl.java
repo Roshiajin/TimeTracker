@@ -62,4 +62,8 @@ public class FormAccessObjectImpl implements FormAccessObject {
         final JButton button = this.form.getButton(buttonName);
         button.addActionListener(listener);
     }
+
+    public void setLogDescription(String logDescription) {
+        this.form.setLogDescription(logDescription);
+    }
 }

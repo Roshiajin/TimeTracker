@@ -76,4 +76,8 @@ public class FormServiceImpl implements FormService {
         this.writeTimeLog(timeLog);
         this.setTotalTime(String.valueOf(TimeLogCalculation.getTotalTime(timeLog)));
     }
+
+    public void setLogDescription(String logDescription) {
+        this.formAccessObject.setLogDescription(logDescription);
+    }
 }

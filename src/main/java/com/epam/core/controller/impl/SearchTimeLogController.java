@@ -29,11 +29,12 @@ public class SearchTimeLogController implements Controller {
     public void perform() {
 
         String personName = this.formService.getFilter();
-
         Person person = null;
         List<TimeLog> timeLogs = null;
+
         if (personName.isEmpty()) {
             timeLogs = this.databaseService.retrieveAll(TimeLog.class);
+            this.formService.update(timeLogs);
         } else {
 
             person = this.databaseService.retrieveByField("name", personName, Person.class);
