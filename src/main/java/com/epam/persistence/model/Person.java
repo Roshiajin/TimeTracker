@@ -5,17 +5,17 @@ import java.io.Serializable;
 import java.util.Set;
 
 @Entity
-@Table(name = "Person")
+@Table(name = "person")
 public class Person implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
-    @JoinColumn(nullable = false)
+    @Column(name = "id", nullable = false, unique = true)
     private int id;
 
-    @JoinColumn(name = "Name", nullable = false, unique = true)
+    @Column(name = "name", nullable = false, unique = true)
     private String name;
 
     @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY, mappedBy = "person")

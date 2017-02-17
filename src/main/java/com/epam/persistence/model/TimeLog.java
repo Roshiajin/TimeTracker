@@ -5,25 +5,27 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-@Table(name = "TimeLog")
+@Table(name = "timelog")
 public class TimeLog implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
-    @JoinColumn(nullable = false)
+    @Column(name = "id", nullable = false)
     private int id;
 
     @ManyToOne
     @JoinColumn(name = "person_id", nullable = false)
     private Person person;
 
-    @JoinColumn(nullable = false)
+    @Column(name = "log_description", nullable = true)
     private String logDescription;
 
     @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "start_datetime", nullable = false)
     private java.util.Date startDateTime;
 
     @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "end_datetime", nullable = false)
     private java.util.Date endDatetime;
 
     public TimeLog() { }
