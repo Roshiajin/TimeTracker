@@ -19,6 +19,24 @@
                     <target>1.8</target>
                 </configuration>
             </plugin>
+
+            <!--<plugin>-->
+                <!--<groupId>org.liquibase</groupId>-->
+                <!--<artifactId>liquibase-maven-plugin</artifactId>-->
+                <!--<version>3.5.3</version>-->
+                <!--<configuration>-->
+                    <!--<propertyFile>src/main/resources/properties/liquibase.properties</propertyFile>-->
+                <!--</configuration>-->
+                <!--<executions>-->
+                    <!--<execution>-->
+                        <!--<phase>process-resources</phase>-->
+                        <!--<goals>-->
+                            <!--<goal>update</goal>-->
+                        <!--</goals>-->
+                    <!--</execution>-->
+                <!--</executions>-->
+            <!--</plugin>-->
+
         </plugins>
     </build>
 
@@ -36,6 +54,7 @@
         <oracle.version>11.2.0.3</oracle.version>
         <junit.version>4.12</junit.version>
         <log4j.version>2.7</log4j.version>
+        <liquibase.version>3.5.3</liquibase.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -135,6 +154,14 @@
             <artifactId>log4j-api</artifactId>
             <version>${log4j.version}</version>
         </dependency>
+
+        <!--liquibase-->
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-maven-plugin</artifactId>
+            <version>${liquibase.version}</version>
+        </dependency>
+
 
     </dependencies>
 

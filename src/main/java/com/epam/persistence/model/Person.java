@@ -1,7 +1,5 @@
 package com.epam.persistence.model;
 
-import com.epam.utilities.annotations.Viewed;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
@@ -15,11 +13,9 @@ public class Person implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
     @JoinColumn(nullable = false)
-    @Viewed(name = "ID")
     private int id;
 
     @JoinColumn(name = "Name", nullable = false, unique = true)
-    @Viewed(name = "Name")
     private String name;
 
     @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY, mappedBy = "person")

@@ -24,6 +24,7 @@
          <list>
             <value>classpath:properties/database.properties</value>
             <value>classpath:properties/hibernate.properties</value>
+            <value>classpath:properties/liquibase.properties</value>
          </list>
       </property>
    </bean>
@@ -57,6 +58,17 @@
 
    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
       <property name="entityManagerFactory" ref="managerFactory" />
+   </bean>
+
+   <!--liquibase-->
+   <bean id="liquibase" class="liquibase.integration.spring.SpringLiquibase">
+      <property name="dataSource" ref="dataSource" />
+      <property name="changeLog" value="${liquibase.changeLog}" />
+
+      <!--
+      contexts specifies the runtime contexts to use.
+      -->
+      <property name="contexts" value="${liquibase.contexts}" />
    </bean>
 
 </beans>
