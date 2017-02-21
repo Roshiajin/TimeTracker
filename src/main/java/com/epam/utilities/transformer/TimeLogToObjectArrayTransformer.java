@@ -1,6 +1,6 @@
 package com.epam.utilities.transformer;
 
-import com.epam.persistence.model.TimeLog;
+import com.epam.persistence.entities.TimeLog;
 import com.epam.utilities.calculations.TimeLogCalculation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

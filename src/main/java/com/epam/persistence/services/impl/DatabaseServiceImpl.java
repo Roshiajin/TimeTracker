@@ -32,13 +32,11 @@ public class DatabaseServiceImpl implements DatabaseService {
         this.dataAccessObject.update(object);
     }
 
-//    @Transactional(propagation = Propagation.NEVER, isolation = Isolation.SERIALIZABLE)
     public <T> List<T> retrieveAll(Class<T> type) {
         List<T> result = this.dataAccessObject.retrieveAll(type);
         return result;
     }
 
-//    @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.SERIALIZABLE)
     public <T> T retrieveById(int id, Class<T> type) {
         T result = this.dataAccessObject.retrieveById(id, type);
         return result;

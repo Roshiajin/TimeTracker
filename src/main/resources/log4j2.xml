@@ -52,7 +52,7 @@
             <AppenderRef ref="Dao-all" level="ALL" />
         </Logger>
 
-        <Logger name="com.epam.persistence.model" additivity="false" level="ALL">
+        <Logger name="com.epam.persistence.entities" additivity="false" level="ALL">
             <AppenderRef ref="Model-all" level="ALL" />
         </Logger>
 

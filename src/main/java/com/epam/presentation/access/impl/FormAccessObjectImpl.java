@@ -1,8 +1,7 @@
 package com.epam.presentation.access.impl;
 
-import com.epam.persistence.model.TimeLog;
+import com.epam.persistence.entities.TimeLog;
 import com.epam.presentation.access.FormAccessObject;
-import com.epam.presentation.services.impl.FormServiceImpl;
 import com.epam.presentation.view.MainGUI;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

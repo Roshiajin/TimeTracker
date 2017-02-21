@@ -1,7 +1,6 @@
 package com.epam.presentation.access;
 
-import com.epam.persistence.model.Person;
-import com.epam.persistence.model.TimeLog;
+import com.epam.persistence.entities.TimeLog;
 
 import java.awt.event.ActionListener;
 import java.util.Date;

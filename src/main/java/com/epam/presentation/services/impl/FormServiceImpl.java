@@ -1,6 +1,6 @@
 package com.epam.presentation.services.impl;
 
-import com.epam.persistence.model.TimeLog;
+import com.epam.persistence.entities.TimeLog;
 import com.epam.presentation.services.FormService;
 import com.epam.utilities.calculations.TimeLogCalculation;
 import org.apache.logging.log4j.LogManager;

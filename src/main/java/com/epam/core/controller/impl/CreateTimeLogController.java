@@ -1,8 +1,8 @@
 package com.epam.core.controller.impl;
 
 import com.epam.core.controller.Controller;
-import com.epam.persistence.model.Person;
-import com.epam.persistence.model.TimeLog;
+import com.epam.persistence.entities.Person;
+import com.epam.persistence.entities.TimeLog;
 import com.epam.persistence.services.DatabaseService;
 import com.epam.presentation.services.FormService;
 import org.apache.logging.log4j.LogManager;
@@ -10,7 +10,6 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.swing.*;
 import java.util.Date;
 import java.util.List;
 
@@ -67,66 +66,5 @@ public class CreateTimeLogController implements Controller {
 
         this.formService.update(timeLogs);
     }
-
-//
-//    class TimeLogWorker extends SwingWorker<List, String> {
-//
-//        String filter;
-//
-//        TimeLogWorker(String filter) {
-//            this.filter = filter;
-//        }
-//
-//        @Override
-//        protected List<TimeLog> doInBackground() throws Exception {
-//            List<TimeLog> list;
-//
-//            logger.trace("Start TimeLogSwingWorker");
-//
-//            String personName = this.filter;
-//
-//            if (personName == null || personName.isEmpty()) {
-//                list = service.gettAllTimeLog();
-//                logger.trace("End TimeLogSwingWorker: list.size="+list.size());
-//
-//                return list;
-//            }
-//
-//            Person person = service.getPersonByName(personName);
-//
-//            if (person == null) {
-//                logger.trace("End TimeLogSwingWorker: list is null");
-//
-//                return null;
-//            }
-//
-//            list = service.getPersonTimeLog(person);
-//
-//            logger.trace("End TimeLogSwingWorker: list.size="+list.size());
-//
-//            return list;
-//        }
-//
-//        @Override
-//        protected void done() {
-//            SwingUtilities.invokeLater(new Runnable() {
-//                @Override
-//                public void run() {
-//                    try {
-//                        List<TimeLog> list = get();
-//                        if (list == null) {
-//                            view.showMessage("No such person name found!","Error!");
-//                        } else {
-//                            initModel(list);
-//                        }
-//
-//                    } catch (Exception ex) {
-//                        logger.catching(ex);
-//                        throw new RuntimeException(ex);
-//                    }
-//                }
-//            });
-//        }
-//    }
 
 }

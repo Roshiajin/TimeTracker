@@ -1,8 +1,8 @@
 package com.epam.core.controller.impl;
 
 import com.epam.core.controller.Controller;
-import com.epam.persistence.model.Person;
-import com.epam.persistence.model.TimeLog;
+import com.epam.persistence.entities.Person;
+import com.epam.persistence.entities.TimeLog;
 import com.epam.persistence.services.DatabaseService;
 import com.epam.presentation.services.FormService;
 import org.apache.logging.log4j.LogManager;

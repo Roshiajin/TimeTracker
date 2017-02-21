@@ -1,4 +1,4 @@
-package com.epam.persistence.model;
+package com.epam.persistence.entities;
 
 import javax.persistence.*;
 import java.io.Serializable;

@@ -11,7 +11,6 @@ import javax.swing.text.MaskFormatter;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import static com.epam.utilities.Constants.Formats.dateFormatter;
@@ -54,8 +53,6 @@ public class MainGUI {
     private static final int DEFAULT_HEIGHT = Constants.DefaultValues.FORM_HEIGHT;
 
     protected MainGUI() {
-
-        //this.tableModel = tableModel;
 
         frame = new JFrame(FORM_NAME);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -105,9 +102,7 @@ public class MainGUI {
 
         addLabel(pane, totalTimeFormatLabel, 2, 4, GridBagConstraints.LINE_START);
 
-        //Display the window.
         frame.pack();
-        //frame.setVisible(true);
     }
 
     private void addLabel(Container pane, JLabel label, int gridx, int gridy) {
