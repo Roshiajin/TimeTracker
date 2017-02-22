@@ -43,6 +43,7 @@ public class CreateTimeLogController implements Controller {
         if (person == null) {
             person = new Person();
             person.setName(personName);
+            person.setPhoneNumber(this.formService.getPhoneNumber());
             this.databaseService.create(person);
             person = this.databaseService.retrieveByField("name", personName, Person.class);
         }
@@ -62,6 +63,7 @@ public class CreateTimeLogController implements Controller {
         logger.trace("timeLogs.size = " + timeLogs.size());
 
         this.formService.setPersonName("");
+        this.formService.setPhoneNumber("");
         this.formService.setLogDescription("");
 
         this.formService.update(timeLogs);

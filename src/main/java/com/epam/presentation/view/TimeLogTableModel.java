@@ -16,7 +16,7 @@ public class TimeLogTableModel extends AbstractTableModel {
 
     private static final Logger logger = LogManager.getLogger(TimeLogTableModel.class);
 
-    private static final String[] timeLogColumnNames = Constants.TableModelNames.columnNames;
+    private static final String[] timeLogColumnNames = Constants.TableColumnNames.columnNames;
 
     private List<TimeLog> timeLogTableData = new ArrayList<TimeLog>();
 
@@ -50,12 +50,14 @@ public class TimeLogTableModel extends AbstractTableModel {
             case 0:
                 return timeLog.getPerson().getName();
             case 1:
-                return timeLog.getLogDescription();
+                return timeLog.getPerson().getPhoneNumber();
             case 2:
-                return timeLog.getStartDateTime();
+                return timeLog.getLogDescription();
             case 3:
-                return timeLog.getEndDateTime();
+                return timeLog.getStartDateTime();
             case 4:
+                return timeLog.getEndDateTime();
+            case 5:
                 return TimeLogCalculation.getTimeLogInterval(timeLog.getStartDateTime(), timeLog.getEndDateTime());
             default:
                 return "";

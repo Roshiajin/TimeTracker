@@ -9,6 +9,8 @@ import java.util.List;
 public interface FormAccessObject {
     String getPersonName();
     void setPersonName(String name);
+    String getPhoneNumber();
+    void setPhoneNumber(String phoneNumber);
     String getLogDescription();
     Date getStartDateTime();
     Date getEndDateTime();

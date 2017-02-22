@@ -9,24 +9,13 @@ public class Constants {
         public static final String B_CLEAR_FILTER = "filterClearButton";
     }
 
-    public static class TableModelNames {
+    public static class TableColumnNames {
         public static String[] columnNames = {"Person name",
+                "Phone Number",
                 "Log Description",
                 "Start DateTime",
                 "End DateTime",
                 "Interval"};
-    }
-
-    public static class TableColumnNames {
-        public static final String ID = "ID";
-        public static final String NAME = "Name";
-        public static final String CITY = "City";
-        public static final String COUNTRY = "Country";
-        public static final String FROM_ID = "From ID";
-        public static final String TO_ID = "To ID";
-        public static final String PRICE = "Price";
-        public static final String DATE = "Date";
-        public static final String TIME = "Time";
     }
 
     public static class ComponentTitles {
@@ -37,7 +26,7 @@ public class Constants {
     }
 
     public static class DefaultValues {
-        public static final int FORM_WIDTH = 800;
+        public static final int FORM_WIDTH = 850;
         public static final int FORM_HEIGHT = 600;
     }
 

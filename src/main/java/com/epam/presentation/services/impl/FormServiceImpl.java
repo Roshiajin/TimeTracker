@@ -39,6 +39,10 @@ public class FormServiceImpl implements FormService {
 
     public void setPersonName(String name) { this.formAccessObject.setPersonName(name); }
 
+    public String getPhoneNumber() { return this.formAccessObject.getPhoneNumber(); }
+
+    public void setPhoneNumber(String phoneNumber) { this.formAccessObject.setPhoneNumber(phoneNumber); }
+
     public String getLogDescription() { return this.formAccessObject.getLogDescription(); }
 
     public Date getStartDateTime() { return this.formAccessObject.getStartDateTime(); }

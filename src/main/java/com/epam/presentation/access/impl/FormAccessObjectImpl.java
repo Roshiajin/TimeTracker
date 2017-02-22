@@ -25,6 +25,10 @@ public class FormAccessObjectImpl implements FormAccessObject {
 
     public void setPersonName(String name) { this.form.setPersonName(name); }
 
+    public String getPhoneNumber() { return this.form.getPhoneNumber(); }
+
+    public void setPhoneNumber(String phoneNumber) { this.form.setPhoneNumber(phoneNumber); }
+
     public String getLogDescription() { return this.form.getLogDescription(); }
 
     public Date getStartDateTime() { return this.form.getStartDateTime(); }

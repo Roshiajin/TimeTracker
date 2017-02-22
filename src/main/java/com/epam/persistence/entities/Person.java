@@ -18,6 +18,9 @@ public class Person implements Serializable {
     @Column(name = "name", nullable = false, unique = true)
     private String name;
 
+    @Column(name = "phonenumber", nullable = true, unique = false)
+    private String phoneNumber;
+
     @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY, mappedBy = "person")
     private Set<TimeLog> timeLogs;
 
@@ -50,5 +53,13 @@ public class Person implements Serializable {
 
     public void setTimeLogs(Set<TimeLog> timeLogs) {
         this.timeLogs = timeLogs;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 }

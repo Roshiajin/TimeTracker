@@ -1,6 +1,7 @@
 package com.epam.presentation.view;
 
 import com.epam.utilities.Constants;
+import com.epam.utilities.view.JTextFieldLimit;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +23,11 @@ public class MainGUI {
 
     private JLabel personNameLabel = new JLabel("Person Name:");
     private JLabel logDescriptionLabel = new JLabel("Log Description:");
+    private JLabel phoneNumberLabel = new JLabel("Phone Number:");
     private JLabel startDateTimeLabel = new JLabel("Start DateTime:");
     private JLabel endDateTimeLabel = new JLabel("End DateTime:");
     private JTextField personNameTextField = new JTextField();
+    private JTextField phoneNumberTextField = new JTextField();
     private JTextField logDescriptionTextField = new JTextField();
     private JFormattedTextField startDateTimeTextField = new JFormattedTextField(createFormatter("##:##:## ##-##-####"));;
     private JFormattedTextField endDateTimeTextField = new JFormattedTextField(createFormatter("##:##:## ##-##-####"));;
@@ -65,15 +68,19 @@ public class MainGUI {
         pane.setLayout(new GridBagLayout());
 
         addLabel(pane, personNameLabel, 0, 0);
-        addLabel(pane, logDescriptionLabel, 1, 0);
-        addLabel(pane, startDateTimeLabel, 2, 0);
-        addLabel(pane, endDateTimeLabel, 3, 0);
+        addLabel(pane, phoneNumberLabel, 1, 0);
+        addLabel(pane, logDescriptionLabel, 2, 0);
+        addLabel(pane, startDateTimeLabel, 3, 0);
+        addLabel(pane, endDateTimeLabel, 4, 0);
+
         addTextField(pane, personNameTextField, 0, 1);
-        addTextField(pane, logDescriptionTextField, 1, 1);
-        addDateFormattedTextField(pane, startDateTimeTextField, 2, 1);
-        addDateFormattedTextField(pane, endDateTimeTextField, 3, 1);
+        phoneNumberTextField.setDocument(new JTextFieldLimit(11));
+        addTextField(pane, phoneNumberTextField, 1, 1);
+        addTextField(pane, logDescriptionTextField, 2, 1);
+        addDateFormattedTextField(pane, startDateTimeTextField, 3, 1);
+        addDateFormattedTextField(pane, endDateTimeTextField, 4, 1);
         createTimeLogButton.setName("createTimeLogButton");
-        addButton(pane, createTimeLogButton, 4, 1, GridBagConstraints.LINE_START);
+        addButton(pane, createTimeLogButton, 5, 1, GridBagConstraints.LINE_START);
 
         addLabel(pane, filterLabel, 0, 2);
         addTextField(pane, filterTextField, 1, 2);
@@ -149,11 +156,12 @@ public class MainGUI {
         gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
         gridBagConstraints.gridx = gridx;
         gridBagConstraints.gridy = gridy;
-        gridBagConstraints.weightx = 0.5;
         gridBagConstraints.anchor = GridBagConstraints.CENTER;
         gridBagConstraints.insets = new Insets(0,5,0,0);
-        textField.setMinimumSize(new Dimension(100, 20));
-        textField.setPreferredSize(new Dimension(100, 20));
+        textField.setMinimumSize(new Dimension(80, 20));
+        textField.setPreferredSize(new Dimension(80, 20));
+        textField.setMaximumSize(new Dimension(80, 20));
+        textField.setColumns(11);
         pane.add(textField, gridBagConstraints);
     }
 
@@ -186,6 +194,12 @@ public class MainGUI {
     }
 
     public String getPersonName() {return personNameTextField.getText().trim();}
+
+    public void setPhoneNumber(String phoneNumber) {
+        phoneNumberTextField.setText(phoneNumber);
+    }
+
+    public String getPhoneNumber() {return phoneNumberTextField.getText().trim();}
 
     public void setLogDescription(String logDescription) {
         logDescriptionTextField.setText(logDescription);
