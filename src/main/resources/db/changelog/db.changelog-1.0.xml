@@ -8,7 +8,16 @@
     <changeSet author="AlexanderGaptullin" id="db_init" context="legacy">
         <sqlFile dbms="mysql"
                  encoding="utf8"
-                 path="src/main/resources/db/changelog/db_init.sql"
+                 path="db_init.sql"
+                 relativeToChangelogFile="true"
+                 splitStatements="true"
+                 stripComments="true"/>
+    </changeSet>
+
+    <changeSet author="AlexanderGaptullin" id="add_person_phonenumber">
+        <sqlFile dbms="mysql"
+                 encoding="utf8"
+                 path="add_person_phonenumber.sql"
                  relativeToChangelogFile="true"
                  splitStatements="true"
                  stripComments="true"/>

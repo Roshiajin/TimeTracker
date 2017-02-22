@@ -1,0 +1,1 @@
+alter table `timetracker`.`person` add column `phonenumber` varchar(11) null after `name`;
