@@ -26,7 +26,7 @@
     <name>timetracker</name>
 
     <properties>
-        <spring.version>4.2.4.RELEASE</spring.version>
+        <spring.version>4.3.6.RELEASE</spring.version>
         <hibernate.version>4.3.10.Final</hibernate.version>
         <hibernate.jpa.version>1.0.0.Final</hibernate.jpa.version>
         <hibernate.validator.version>4.3.1.Final</hibernate.validator.version>
@@ -37,6 +37,8 @@
         <junit.version>4.12</junit.version>
         <log4j.version>2.7</log4j.version>
         <liquibase.version>3.5.3</liquibase.version>
+        <mockito.version>2.7.9</mockito.version>
+        <junit.version>4.12</junit.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -64,6 +66,12 @@
             <artifactId>spring-tx</artifactId>
             <version>${spring.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
 
         <!-- Hibernate -->
         <dependency>
@@ -148,8 +156,16 @@
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>2.7.9</version>
+            <version>${mockito.version}</version>
         </dependency>
+
+       <!--junit-->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+        </dependency>
+
 
     </dependencies>
 
